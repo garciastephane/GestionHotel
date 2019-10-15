@@ -93,20 +93,39 @@ public class Reservation {
 	 * Affiche la réservation
 	 */
 	public void affichage() {
-		
-	}
+		}
+	
 
 	/**
-	 * 
+	 * methode qui effectue le payement et aliment le fichier de transactions
 	 */
-	public void payement(Scanner in, String cheminDossier) {
+	public void payement(int montant, Scanner in, String cheminDossier) {
 		String numeroCarte;
-		System.out.println("Vous devez : " + montantTotal + " , merci de donner votre numéro de carte");
+		if(montant>0) {
+		System.out.println("Vous devez : " + montant + " , merci de donner votre numéro de carte");
+		}
+		else if(montant<0) {
+			System.out.println("Nous vous remboursons : " + montant + " , merci de donner votre numéro de carte");
+		}
+		
 		numeroCarte=in.nextLine();
 		
-		transaction(LocalDate.now(), "payement", montantTotal, numeroCarte, cheminDossier);
+		if(montant>0) {
+		transaction(LocalDate.now(), "payement", montant, numeroCarte, cheminDossier);
+		}else if(montant<0) {
+			transaction(LocalDate.now(), "remboursement", montant, numeroCarte, cheminDossier);
+		}
 	}
 	
+	
+	/**
+	 * methode qui alimente le fichier de transaction
+	 * @param date : date de la transaction
+	 * @param nature : nature de la transaction
+	 * @param valeur : valeur de la transaction
+	 * @param numeroCarte : numéro de carte du client
+	 * @param cheminDossier : chemin dosssier transaction
+	 */
 	public void transaction(LocalDate date, String nature, int valeur, String numeroCarte, String cheminDossier) {
 		String cheminFichier=cheminDossier + "transactions" + date.format(DateTimeFormatter.ofPattern("ddMMyyyy")) +".txt";
 		File f = new File(cheminFichier);

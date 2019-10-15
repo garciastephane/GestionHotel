@@ -130,7 +130,7 @@ public class Employe {
 
 		
 		reservation.affichage();
-		reservation.payement(in, hotel.getCheminDossierTransaction());
+		reservation.payement(reservation.getMontantTotal(), in, hotel.getCheminDossierTransaction());
 		//envoie facture
 		//alimentation fichier transactions
 		
