@@ -102,7 +102,7 @@ public class Chambre {
 		for (int i = 0; i < listeReservations.length; i++) {
 
 			if (listeReservations[i] != null && listeReservations[i].getDateDebut().minusDays(1).isBefore(date)
-					&& listeReservations[i].getdateFin().isAfter(date)) {
+					&& listeReservations[i].getDateFin().isAfter(date)) {
 				return true;
 			}
 		}
@@ -186,7 +186,7 @@ public class Chambre {
 		for (int i = 0; i < listeReservations.length; i++) {
 			if (listeReservations[i] != null) {
 				System.out.print("Du " + listeReservations[i].getDateDebut());
-				System.out.print(" au " + listeReservations[i].getdateFin());
+				System.out.print(" au " + listeReservations[i].getDateFin());
 				System.out.println(". Nom Client: " + listeReservations[i].getClient().getNom());
 			}
 

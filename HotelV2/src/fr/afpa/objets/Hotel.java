@@ -21,7 +21,10 @@ public class Hotel {
 		// initialisation listeChambres via ficier csv
 		creationHotel("ressources\\ListeChambres_V3.csv");
 
+		//creation employe admin
 		employe=new Employe("GH000", "nom admin", "prenom admin");
+		
+		//ecriture login/mot de passe de l'employe dans un fichier texte
 		Fichier.ecritureFichier(cheminFichierMdp, "fonction;login;mdp;mdpAdmin", false);
 		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + "GH000" + ";" + "admin"+ ";" + "admin", true);
 		listeClients = null;

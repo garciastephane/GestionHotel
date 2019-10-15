@@ -96,7 +96,7 @@ public class Employe {
 		dateFin = LocalDate.parse(Saisie.saisieDate(in, dateDebut.plusDays(1)),
 				DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-		// recherche des chambres disponibles date (capacité?)
+		// recherche des chambres disponibles aux dates demandées et si il n'y a pas déjà 5 reservations dans la chambres (capacité?)
 		chambresDisponible = hotel.listeChambreDispo(dateDebut, dateFin);
 		
 		// affichage chambres disponibles
@@ -117,9 +117,10 @@ public class Employe {
 		// creation de la reservation
 		Reservation reservation = new Reservation(dateDebut, dateFin, chambresDisponible[indiceChambreReserve],
 				hotel.getListeClients()[indiceClient]);
-
+		
+		
 		reservation.affichage();
-		System.out.println("Confirmation de réservation de la chambre (oui ou non) ?");
+		System.out.println("Confirmation de la réservation de la chambre (oui ou non) ?");
 		reponse = Saisie.saisieOuiouNon(in);
 		
 		if (reponse.equals("non")) {
