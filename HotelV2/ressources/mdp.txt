@@ -1,0 +1,2 @@
+fonction;login;mdp;mdpAdmin
+employe;GH000;admin;admin
