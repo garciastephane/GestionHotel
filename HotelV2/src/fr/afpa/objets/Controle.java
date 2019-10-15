@@ -106,15 +106,49 @@ public class Controle {
 		return true;
 	}
 
+	
+	
 	public static boolean isMail(String mail) {
 		return true;
 
 	}
 
-	public static boolean isDateValide(String dateSaisie) {
+	/**
+	 * methode qui retourne si la chaine de caractère est une date valide
+	 * 
+	 * @param date chaine de caractère à tester (jj/mm/aaaa)
+	 * @return true si la chaine est une date valide, false sinon
+	 */
+	public static boolean isDateValide(String date) {
+
+		if (date.length() != 10 || date.charAt(2) != '/' || date.charAt(5) != '/'
+				|| !isNumerique(date.replace('/', '0'), date.length())) {
+			return false;
+		}
+
+		boolean bissextile;
+		int jour = Integer.parseInt("" + date.charAt(0) + date.charAt(1));
+		int mois = Integer.parseInt("" + date.charAt(3) + date.charAt(4));
+		int annee = Integer.parseInt("" + date.charAt(6) + date.charAt(7) + date.charAt(8) + date.charAt(9));
+
+		bissextile = ((annee % 4 == 0 && annee % 100 != 0) || (annee % 4 == 0 && annee % 400 == 0));
+
+		if ((jour < 1 || jour > 31 || mois > 12 || mois < 1 )
+				|| ((mois == 4 || mois == 6 || mois == 9 || mois == 11) && jour > 30)
+				|| (mois == 2 && jour > 28 && !bissextile) || (mois == 2 && jour > 29 && bissextile)) {
+
+			return false;
+
+		}
 		return true;
+
 	}
 
+	/**
+	 * methode qui vérifie si la chaine est composée uniquement de caractères alphabetique
+	 * @param reponse
+	 * @return
+	 */
 	public static boolean isAlphabetic(String reponse) {
 		if (reponse.replaceAll(" ", "").equals("")) {
 			return false;
@@ -133,10 +167,10 @@ public class Controle {
 		String[] ligne;
 		String motDePasse;
 		System.out.print("Mot de passe : ");
-		motDePasse=in.nextLine();
+		motDePasse = in.nextLine();
 		for (int i = 0; i < lignesFichier.length; i++) {
-			ligne=lignesFichier[i].split(";");
-			if(ligne[0].equals("employe") && ligne[3].length()>0 ) {
+			ligne = lignesFichier[i].split(";");
+			if (ligne[0].equals("employe") && ligne[3].length() > 0) {
 				if (ligne[1].equals(choix) && ligne[3].equals(motDePasse)) {
 					return true;
 				}
