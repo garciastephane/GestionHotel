@@ -53,7 +53,7 @@ public class Chambre {
 		superficie = superficie_;
 	}
 
-	public String getVueSuperficie() {
+	public String getSuperficie() {
 		return superficie;
 	}
 
@@ -92,44 +92,44 @@ public class Chambre {
 	/**
 	 * methode qui permet de vérifier si une chambre est réservée à une date
 	 * 
-	 * @param date : LocalDate représentant la date où on veut savoir si la chambre
-	 *             est réservé
+	 * @param date : LocalDate représentant la date où on veut savoir si la
+	 *             chambre est réservé
 	 * @return true si la chambre est réservée, false si elle est libre
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public boolean isReserve(LocalDate date) {
-		
+
 		for (int i = 0; i < listeReservations.length; i++) {
 
-            if (listeReservations[i] != null && listeReservations[i].getDateDebut().minusDays(1).isBefore(date)
-                    && listeReservations[i].getdateFin().isAfter(date)) {
-                return true;
-            }
-        }
-        return false;
+			if (listeReservations[i] != null && listeReservations[i].getDateDebut().minusDays(1).isBefore(date)
+					&& listeReservations[i].getdateFin().isAfter(date)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
 	 * méthode qui permet de vérifier si une chambre est réservée à pendant une
 	 * période
 	 * 
-	 * @param dateDebut : LocalDate représentant la date de début de la période où
+	 * @param dateDebut : LocalDate représentant la date de début de la période
+	 *                  où on veut savoir si la chambre est réservé
+	 * @param dateFin   : LocalDate représentant la date de fin de la période où
 	 *                  on veut savoir si la chambre est réservé
-	 * @param dateFin   : LocalDate représentant la date de fin de la période où on
-	 *                  veut savoir si la chambre est réservé
-	 * @return true si la chambre est réservée au moins 1 jour pendant la période,
-	 *         false si elle est libre pendant toute la période
+	 * @return true si la chambre est réservée au moins 1 jour pendant la
+	 *         période, false si elle est libre pendant toute la période
 	 */
-	
+
 	public boolean isReservePeriode(LocalDate dateDebut, LocalDate dateFin) {
-		
-		 LocalDate date = dateDebut;
-		 while(!date.isAfter(dateFin)) {
-			 if(isReserve(date)) {
-				 return true;
-			 }
-			 date=date.plusDays(1);
-		 }
+
+		LocalDate date = dateDebut;
+		while (!date.isAfter(dateFin)) {
+			if (isReserve(date)) {
+				return true;
+			}
+			date = date.plusDays(1);
+		}
 		return false;
 	}
 
@@ -144,21 +144,54 @@ public class Chambre {
 	}
 
 	public boolean isIdentique(Chambre chambre) {
-		if(!(typeDeChambre.equals(chambre.typeDeChambre) 
-				&&  superficie.equals(chambre.superficie) 
-				&& tarif==chambre.tarif
-				&& vue.equals(chambre.vue))) {
-		return false;
+		if (!(typeDeChambre.equals(chambre.typeDeChambre) && superficie.equals(chambre.superficie)
+				&& tarif == chambre.tarif && vue.equals(chambre.vue))) {
+			return false;
 		}
 		for (int i = 0; i < listeOptions.length; i++) {
-			if(!listeOptions[i].equals(chambre.listeOptions[i])) {
+			if (!listeOptions[i].equals(chambre.listeOptions[i])) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
 
+	/**
+	 * Methode qui permet d'afficher les caract�ristiques d'une chambre
+	 * 
+	 * @param num�ro        : represente le num�ro de la chambre � afficher
+	 * @param typeDeChambre : repr�sente le type de chambre
+	 * @param superficie    : repr�sente la superficie
+	 * @param vue           : r�presente la(les) vue(s) de la chambre
+	 * @param chambre       occup�e : savoir si une chambre est occup�e � la date
+	 * @param liste         reservations : liste des r�servations
+	 */
+
+	public void afficherEtatChambre() {
+		System.out.println();
+		System.out.println("Num�ro de la chambre: " + numero);
+		System.out.println("Type de la chambre: " + typeDeChambre);
+		System.out.println("Superficie de la chambres: " + superficie);
+		System.out.println("Vue de la chambre " + vue);
+		System.out.print("Chambre occup�e: ");
+		if (isReserve(LocalDate.now())) {
+			System.out.println("OUI");
+		} else {
+			System.out.println("NON");
+		}
+
+		System.out.println("Liste reservations de la chambre : ");
+
+		for (int i = 0; i < listeReservations.length; i++) {
+			if (listeReservations[i] != null) {
+				System.out.print("Du " + listeReservations[i].getDateDebut());
+				System.out.print(" au " + listeReservations[i].getdateFin());
+				System.out.println(". Nom Client: " + listeReservations[i].getClient().getNom());
+			}
+
+		}
+		System.out.println();
+		System.out.println("---------------------------------------------------------------");
+	}
 }

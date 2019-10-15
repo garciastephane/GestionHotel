@@ -215,7 +215,7 @@ public class Hotel {
 		String choix = in.nextLine();
 
 		switch (choix) {
-		case "A":
+		case "A":afficherEtatHotel();
 			break;
 		case "B":
 			afficherNombreChambresReserves();
@@ -414,5 +414,21 @@ public class Hotel {
 
 		return chambresDisponibles;
 	}
+	
+	
+	/**
+	 * Methode qui permet d'afficher l' état de l'hotel 
+	 * 
+	 * @param liste chambres : represente toutes les chambres de l'hotel
+	 * @param nom : le nom du client
+	 * @param superficie :  représente la superficie
+ 	 * @param vue : répresente la(les) vue(s) de la chambre
+ 	 * @param chambre occupée : savoir si une chambre est occupée à la date 
+ 	 * @param liste reservations : liste des réservations
+	 */
+	public void afficherEtatHotel() {
+		for (int i =0; i<listeChambres.length; i++)
+				listeChambres[i].afficherEtatChambre();
+			}
 
 }

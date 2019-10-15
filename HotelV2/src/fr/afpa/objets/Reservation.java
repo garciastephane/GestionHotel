@@ -92,7 +92,7 @@ public class Reservation {
 		System.out.println("Votre réservation : ");
 		System.out.println("Du " + dateDebut + " au " + dateFin);
 		System.out.println("Chambre n°" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
-				+ chambre.getVueSuperficie());
+				+ chambre.getSuperficie());
 		System.out.println(" vue : " + chambre.getVue() + " tarif journalier : " + chambre.getTarif());
 		System.out.println("Options de la chambre : ");
 		for (int i = 0; i < chambre.getListeOptions().length; i++) {
