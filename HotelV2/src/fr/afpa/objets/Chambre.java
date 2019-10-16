@@ -85,7 +85,7 @@ public class Chambre {
 		listeReservations = listeReservations_;
 	}
 
-	public Reservation[] getListeReservationS() {
+	public Reservation[] getListeReservations() {
 		return listeReservations;
 	}
 
@@ -158,13 +158,13 @@ public class Chambre {
 	}
 
 	/**
-	 * Methode qui permet d'afficher les caractéristiques d'une chambre
+	 * Methode qui permet d'afficher les caractï¿½ristiques d'une chambre
 	 * 
 	 */
 
 	public void afficherEtatChambre() {
 		System.out.println();
-		System.out.println("Numéro de la chambre: " + numero);
+		System.out.println("Numï¿½ro de la chambre: " + numero);
 		System.out.println("Type de la chambre: " + typeDeChambre);
 		System.out.println("Superficie de la chambres: " + superficie);
 		System.out.println("Vue de la chambre " + vue);
@@ -178,7 +178,7 @@ public class Chambre {
 			}
 		}
 			
-		System.out.print("Chambre occupée: ");
+		System.out.print("Chambre occupï¿½e: ");
 		if (isReserve(LocalDate.now())) {
 			System.out.println("OUI");
 		} else {
@@ -197,5 +197,18 @@ public class Chambre {
 		}
 		System.out.println();
 		System.out.println("---------------------------------------------------------------");
+	}
+	
+	
+	public void liberationChambre() {
+		for (int i = 0; i < listeReservations.length; i++) {
+			System.out.println(i);
+			if (listeReservations[i] != null && listeReservations[i].isEnCours()) {
+				listeReservations[i].suppressionReservation();
+				listeReservations[i] = null;
+				return;
+			}
+		}
+		
 	}
 }

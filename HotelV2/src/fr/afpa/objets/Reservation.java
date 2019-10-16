@@ -44,7 +44,7 @@ public class Reservation {
 
 	}
 
-	public void setdateFin(LocalDate dateFin_) {
+	public void setDateFin(LocalDate dateFin_) {
 		dateFin = dateFin_;
 	}
 
@@ -154,4 +154,16 @@ public class Reservation {
 		return dateFin.compareTo(dateDebut) * chambre.getTarif();
 	}
 
+	public boolean isEnCours() {
+		LocalDate date =LocalDate.now();
+		if(date.plusDays(1).isAfter(dateDebut) && date.isBefore(dateFin) ) {
+			return true;
+		}
+		return false;
+	}
+
+	public void suppressionReservation() {
+		// TODO Auto-generated method stub
+		
+	}
 }

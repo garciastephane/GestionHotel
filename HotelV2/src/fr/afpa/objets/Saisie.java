@@ -100,14 +100,14 @@ public class Saisie {
 	/**
 	 * 
 	 * @param in
-	 * @param i
+	 * @param max
 	 * @return
 	 */
-	public static int saisieChoixInt(Scanner in, int i) {
+	public static int saisieChoixInt(Scanner in,int min, int max) {
 		String reponse = in.nextLine();
 
-		while (!Controle.isNumerique(reponse, reponse.length()) || Integer.parseInt(reponse) > i || Integer.parseInt(reponse)<0) {
-			System.out.println("Veuillez entrez un nombre valide correspondant au choix ci-dessus : entre 0 et " + i);
+		while (!Controle.isNumerique(reponse, reponse.length()) || Integer.parseInt(reponse) > max || Integer.parseInt(reponse)<min) {
+			System.out.println("Veuillez entrez un nombre valide correspondant au choix ci-dessus : entre "+ min + " et " + max);
 			reponse = in.nextLine();
 		}
 		return Integer.parseInt(reponse);

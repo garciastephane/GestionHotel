@@ -26,9 +26,8 @@ public class Hotel {
 		
 		//ecriture login/mot de passe de l'employe dans un fichier texte
 		Fichier.ecritureFichier(cheminFichierMdp, "fonction;login;mdp;mdpAdmin", false);
-		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + "GH000" + ";" + "admin"+ ";" + "admin", true);
+		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + "GH000" + ";" + "admin" + ";" + "admin", true);
 		listeClients = null;
-		
 
 		// appel methode de gestion de l'hotel;
 		gestionHotel();
@@ -85,7 +84,7 @@ public class Hotel {
 	}
 
 	/**
-	 * lecture du fichier et création des chambres de l'hotel
+	 * lecture du fichier et crï¿½ation des chambres de l'hotel
 	 * 
 	 * @param chemin : chemin absolue du fichier .csv contenant les informations sur
 	 *               les chambres
@@ -99,7 +98,7 @@ public class Hotel {
 		// lecture de fichier et stockage de chaque lignes du fichier dans un tableau
 		lignes = Fichier.lecture(chemin);
 
-		// calcul du nombre de chambres à créer
+		// calcul du nombre de chambres ï¿½ crï¿½er
 		for (int i = 0; i < lignes.length; i++) {
 			ligne = lignes[i].split(";");
 			if (Controle.isNumerique(ligne[5], ligne[5].length())) {
@@ -113,7 +112,7 @@ public class Hotel {
 		for (int i = 0; i < lignes.length; i++) {
 			ligne = lignes[i].split(";");
 			if (Controle.isNumerique(ligne[5], ligne[5].length())) {
-				// nombre de chambres à créer pour chaque type
+				// nombre de chambres ï¿½ crï¿½er pour chaque type
 				nbChambres = Integer.parseInt(ligne[5]);
 				for (int j = 0; j < nbChambres; j++) {
 					listeChambres[indexChambre] = new Chambre((indexChambre + 1), ligne[0], ligne[1], ligne[2],
@@ -128,25 +127,25 @@ public class Hotel {
 	public void gestionHotel() {
 		Scanner in = new Scanner(System.in);
 		// on quitte le programme via le menu authentification (pour pouvoir
-		// s'authenfier avec un client une fois créé)
+		// s'authenfier avec un client une fois crï¿½ï¿½)
 		while (menuAuthentification(in))
 			;
 
 	}
 
 	/**
-	 * menu authentification (authentification(employé ou client), créé un employé,
+	 * menu authentification (authentification(employï¿½ ou client), crï¿½ï¿½ un employï¿½,
 	 * quitter le programme
 	 * 
 	 * @param in : le Scanner pour la saisie utilisateur
-	 * @return false si l'utiliateur décide de quitter, false sinon
+	 * @return false si l'utiliateur dï¿½cide de quitter, false sinon
 	 */
 	public boolean menuAuthentification(Scanner in) {
 
-		System.out.print("tapez 1 si vous voulez créer un nouvel employé, tapez \"Q\" pour quitter \nLogin : ");
+		System.out.print("tapez 1 si vous voulez crï¿½er un nouvel employï¿½, tapez \"Q\" pour quitter \nLogin : ");
 		String choix = in.nextLine();
 
-		if (choix.equals("1")) { // creation employé
+		if (choix.equals("1")) { // creation employï¿½
 			creationEmploye(in);
 			return true;
 		}
@@ -157,12 +156,12 @@ public class Hotel {
 
 		if (Controle.isNumerique(choix, 10)) { // authentification d'un client
 
-			if (!Controle.isUnique(choix, listeLoginClient())) { // authentification réussit (client existant)
+			if (!Controle.isUnique(choix, listeLoginClient())) { // authentification rï¿½ussit (client existant)
 
-				for (int i = 0; i < listeClients.length; i++) { // recupération du client dans la liste client
+				for (int i = 0; i < listeClients.length; i++) { // recupï¿½ration du client dans la liste client
 
 					if (listeClients[i].getLogin().equals(choix)) {
-						listeClients[i].afficherReservations(); // affiche ces réservations ou message erreur
+						listeClients[i].afficherReservations(); // affiche ces rï¿½servations ou message erreur
 					}
 				}
 			} else { // authentification mauvaise (client non existant)
@@ -171,11 +170,11 @@ public class Hotel {
 			return true;
 		}
 
-		if (Controle.isAlphaNumerique(choix, 5)) { // authentification employé
+		if (Controle.isAlphaNumerique(choix, 5)) { // authentification employï¿½
 
 			if (Controle.authentificationEmploye(in, choix, cheminFichierMdp)) { // authentification via mot de passe
-				affichageMenu(); // authentification réussit
-				while (choixEmploye(in)) { // affichage menu employé jusqu' a ce qu'il décide de quitter
+				affichageMenu(); // authentification rï¿½ussit
+				while (choixEmploye(in)) { // affichage menu employï¿½ jusqu' a ce qu'il dï¿½cide de quitter
 					affichageMenu();
 				}
 			} else {
@@ -188,20 +187,20 @@ public class Hotel {
 	}
 
 	/**
-	 * Affichage Menu employé
+	 * Affichage Menu employï¿½
 	 */
 	public void affichageMenu() {
 		System.out.println("---------------------   MENU HOTEL CDA JAVA  ------------------");
 		System.out.println("");
-		System.out.println("A- Afficher l'état de l'hôtel");
-		System.out.println("B- Afficher le nombre de chambres réservées");
-		System.out.println("C- Afficher le numéro de chambres libres");
-		System.out.println("D- Afficher le numéro de la première chambre vide");
-		System.out.println("E- Afficher le numéro de la dernière chambre vide");
-		System.out.println("F- Réserver une chambre");
-		System.out.println("G- Libérer une chambre");
-		System.out.println("H- Modifier une réservation");
-		System.out.println("I- Annuler une réservation");
+		System.out.println("A- Afficher l'ï¿½tat de l'hï¿½tel");
+		System.out.println("B- Afficher le nombre de chambres rï¿½servï¿½es");
+		System.out.println("C- Afficher le numï¿½ro de chambres libres");
+		System.out.println("D- Afficher le numï¿½ro de la premiï¿½re chambre vide");
+		System.out.println("E- Afficher le numï¿½ro de la derniï¿½re chambre vide");
+		System.out.println("F- Rï¿½server une chambre");
+		System.out.println("G- Libï¿½rer une chambre");
+		System.out.println("H- Modifier une rï¿½servation");
+		System.out.println("I- Annuler une rï¿½servation");
 		System.out.println("Q- Quitter");
 		System.out.println("");
 		System.out.println("---------------------------------------------------------------");
@@ -209,16 +208,17 @@ public class Hotel {
 	}
 
 	/**
-	 * Traitement du choix employé
+	 * Traitement du choix employï¿½
 	 * 
 	 * @param in : le Scanner pour la saisie utilisateur
-	 * @return : false si l'employé veut quitter le Menu, true sinon
+	 * @return : false si l'employï¿½ veut quitter le Menu, true sinon
 	 */
 	public boolean choixEmploye(Scanner in) {
 		String choix = in.nextLine();
 
 		switch (choix) {
-		case "A":afficherEtatHotel();
+		case "A":
+			afficherEtatHotel();
 			break;
 		case "B":
 			afficherNombreChambresReserves();
@@ -235,7 +235,7 @@ public class Hotel {
 		case "F":
 			employe.reservationChambre(this, in);
 			break;
-		case "G":
+		case "G": employe.liberationChambre(in, this);
 			break;
 		case "H":
 			break;
@@ -251,7 +251,7 @@ public class Hotel {
 	}
 
 	/**
-	 * methode de création de l'employé de l'hotel
+	 * methode de crï¿½ation de l'employï¿½ de l'hotel
 	 * 
 	 * @param in : le Scanner pour la saisie utilisateur
 	 */
@@ -261,29 +261,29 @@ public class Hotel {
 		String nom;
 		String prenom;
 
-		// Demande des informations pour la création de l'employé
-		System.out.println("Entrer le login de l'employé : ");
+		// Demande des informations pour la crï¿½ation de l'employï¿½
+		System.out.println("Entrer le login de l'employï¿½ : ");
 		login = Saisie.saisieLoginEmploye(in);
-		System.out.println("Entrer le mot de passe de l'employé : ");
+		System.out.println("Entrer le mot de passe de l'employï¿½ : ");
 		motDePasse = Saisie.saisieNonVide(in);
-		System.out.println("Entrer le nom de l'employé : ");
+		System.out.println("Entrer le nom de l'employï¿½ : ");
 		nom = Saisie.saisieAlphabetic(in);
-		System.out.println("Entrer le prenom de l'employé : ");
+		System.out.println("Entrer le prenom de l'employï¿½ : ");
 		prenom = Saisie.saisieAlphabetic(in);
 
-		// instantiation de l'employé de la banque
+		// instantiation de l'employï¿½ de la banque
 		employe = new Employe(login, nom, prenom);
 
-		// ajout du login et mot de passe de l'employé au fichier mot de passe
+		// ajout du login et mot de passe de l'employï¿½ au fichier mot de passe
 		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + login + ";" + motDePasse, false);
 
 	}
 
 	/**
-	 * retourne la liste des logins Client ayant créer un profil dans l'hotel
+	 * retourne la liste des logins Client ayant crï¿½er un profil dans l'hotel
 	 * 
-	 * @return un tableau de chaine de caractères représentant la liste des login
-	 *         déjà existant
+	 * @return un tableau de chaine de caractï¿½res reprï¿½sentant la liste des login
+	 *         dï¿½jï¿½ existant
 	 */
 	public String[] listeLoginClient() {
 		if (listeClients == null) { // si aucun client dans l'hotel retour d'un tableau avec une chaine vide
@@ -300,7 +300,7 @@ public class Hotel {
 	/**
 	 * ajoute un nouveau client dans la liste client
 	 * 
-	 * @param client : le Client à ajouter
+	 * @param client : le Client ï¿½ ajouter
 	 */
 	public void ajoutClient(Client client) {
 
@@ -310,18 +310,18 @@ public class Hotel {
 			return;
 		}
 
-		Client[] listeClientTemp = new Client[listeClients.length]; // recupération de la liste Client de l'hotel
+		Client[] listeClientTemp = new Client[listeClients.length]; // recupï¿½ration de la liste Client de l'hotel
 		for (int i = 0; i < listeClientTemp.length; i++) {
 			listeClientTemp[i] = listeClients[i];
 		}
 
-		listeClients = new Client[listeClientTemp.length + 1]; // création d'une nouvelle liste Client de taille + 1 par
-																// rapport à la précédante
+		listeClients = new Client[listeClientTemp.length + 1]; // crï¿½ation d'une nouvelle liste Client de taille + 1 par
+																// rapport ï¿½ la prï¿½cï¿½dante
 
 		for (int i = 0; i < listeClientTemp.length; i++) { // copie de l'ancienne liste dans la nouvelle
 			listeClients[i] = listeClientTemp[i];
 		}
-		listeClients[listeClients.length - 1] = client; // ajout du nouveau Client en dernière position
+		listeClients[listeClients.length - 1] = client; // ajout du nouveau Client en derniï¿½re position
 
 	}
 
@@ -366,7 +366,7 @@ public class Hotel {
 		for (int i = 0; i < listeChambres.length; i++) {
 
 			if (!listeChambres[i].isReserve(LocalDate.now())) {
-				System.out.println("Le numéro de la première chambre libre est : " + listeChambres[i].getNumero());
+				System.out.println("Le numï¿½ro de la premiï¿½re chambre libre est : " + listeChambres[i].getNumero());
 				return;
 			}
 		}
@@ -377,7 +377,7 @@ public class Hotel {
 
 		for (int i = listeChambres.length - 1; i >= 0; i--) {
 			if (!listeChambres[i].isReserve(LocalDate.now())) {
-				System.out.println("Le numéro de la dernière chambre libre est : " + listeChambres[i].getNumero());
+				System.out.println("Le numï¿½ro de la derniï¿½re chambre libre est : " + listeChambres[i].getNumero());
 				return;
 			}
 		}
@@ -385,30 +385,44 @@ public class Hotel {
 
 	public Chambre[] listeChambreDispo(LocalDate dateDebut, LocalDate dateFin) {
 		Chambre[] chambresDisponiblesTemp = new Chambre[listeChambres.length];
-		Chambre[] chambresDisponibles=null;
+		Chambre[] chambresDisponibles = null; // liste des chambres disponibles
 		int indiceChambreDispo = 0;
 		boolean identique;
+		boolean reservationMax = false;
 
-		for (int i = 0; i < listeChambres.length; i++) {
+		for (int i = 0; i < listeChambres.length; i++) { // parcours la liste des chambres de l'hotel
 
-			 if(!listeChambres[i].isReservePeriode(dateDebut, dateFin)) {
+			if (!listeChambres[i].isReservePeriode(dateDebut, dateFin)) { // si la chambre n'est pas rï¿½servï¿½
 
-			identique = false;
-			for (int j = 0; j < indiceChambreDispo; j++) {
-				if (listeChambres[i].isIdentique(chambresDisponiblesTemp[j])) {
-					identique = true;
+				identique = false;
+				for (int j = 0; j < indiceChambreDispo; j++) { // on verifie que l'on a pas ajoutï¿½ une chambre identique
+					if (listeChambres[i].isIdentique(chambresDisponiblesTemp[j])) {
+						identique = true;
+					}
 				}
+				for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) { // on verifie que la chambre
+																							// n'a pas atteint sa
+																							// capacitï¿½ max
+					reservationMax = true;
+					if (listeChambres[i].getListeReservations()[j] == null) {
+						reservationMax = false;
+					}
+				}
+
+				if (!identique && !reservationMax) {// si on a pas une chambre identique et que la chambre n'a pas
+													// atteint sa capacitï¿½ max, on l'ajoute ï¿½ la liste de chambre
+													// proposï¿½es
+
+					chambresDisponiblesTemp[indiceChambreDispo] = listeChambres[i];
+					indiceChambreDispo++;
+
+				}
+
 			}
-			if (!identique) {
-
-				chambresDisponiblesTemp[indiceChambreDispo] = listeChambres[i];
-				indiceChambreDispo++;
-
-			}
-
 		}
-		 }
-		if (indiceChambreDispo > 0) {
+
+		if (indiceChambreDispo > 0) { // si on a au moins une chambre ï¿½ proposï¿½ on recrï¿½e un tableau de la taille du
+										// nombre de chambres proposï¿½es
 			chambresDisponibles = new Chambre[indiceChambreDispo - 1];
 			for (int i = 0; i < chambresDisponibles.length; i++) {
 				chambresDisponibles[i] = chambresDisponiblesTemp[i];
@@ -417,21 +431,20 @@ public class Hotel {
 
 		return chambresDisponibles;
 	}
-	
-	
+
 	/**
-	 * Methode qui permet d'afficher l' état de l'hotel 
+	 * Methode qui permet d'afficher l' ï¿½tat de l'hotel
 	 * 
-	 * @param liste chambres : represente toutes les chambres de l'hotel
-	 * @param nom : le nom du client
-	 * @param superficie :  représente la superficie
- 	 * @param vue : répresente la(les) vue(s) de la chambre
- 	 * @param chambre occupée : savoir si une chambre est occupée à la date 
- 	 * @param liste reservations : liste des réservations
+	 * @param liste      chambres : represente toutes les chambres de l'hotel
+	 * @param nom        : le nom du client
+	 * @param superficie : reprï¿½sente la superficie
+	 * @param vue        : rï¿½presente la(les) vue(s) de la chambre
+	 * @param chambre    occupï¿½e : savoir si une chambre est occupï¿½e ï¿½ la date
+	 * @param liste      reservations : liste des rï¿½servations
 	 */
 	public void afficherEtatHotel() {
-		for (int i =0; i<listeChambres.length; i++)
-				listeChambres[i].afficherEtatChambre();
-			}
+		for (int i = 0; i < listeChambres.length; i++)
+			listeChambres[i].afficherEtatChambre();
+	}
 
 }
