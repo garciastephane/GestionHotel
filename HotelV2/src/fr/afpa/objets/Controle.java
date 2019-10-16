@@ -106,12 +106,63 @@ public class Controle {
 		return true;
 	}
 
-	
-	
-	public static boolean isMail(String mail) {
-		return true;
+	/**
+	 * methode qui confirme si le mail entré est au format valide
+	 * 
+	 * @param mail avec les paramètres qui valident un mail
+	 * @return true si la chaine est un mail valide, false sinon
+	 */
 
+	public static boolean isMail(String mail) {
+		
+		if (mail == null)
+			return false;
+		
+		if (mail.length()<5)
+			return false;
+			
+			
+		// un string avec . apparaît deux fois de suite
+		if (mail.contains("..") )
+			return false;
+		// un string avec un point avant arobase
+		if (mail.contains(".@") )
+			return false;
+
+		String [] parts = mail.split("@");
+		
+		if(parts.length != 2) {
+		
+			return false; }
+		
+			String part1 =parts[0];
+			if(!isNonVide(part1)) {
+				
+				return false;}
+						
+			String part2 = parts[1];
+			
+			String [] part3 =part2.split("\\.");
+			
+			if(part3.length!=2) {
+				
+				return false;}
+
+			if(!isAlphabetic(part3[0])) {
+			
+				return false;
+			}
+			
+			if(!isAlphabetic(part3[1])) {
+			
+				return false;
+			}
+			 return true;
+					
+			
 	}
+			
+	
 
 	/**
 	 * methode qui retourne si la chaine de caractère est une date valide
@@ -133,7 +184,7 @@ public class Controle {
 
 		bissextile = ((annee % 4 == 0 && annee % 100 != 0) || (annee % 4 == 0 && annee % 400 == 0));
 
-		if ((jour < 1 || jour > 31 || mois > 12 || mois < 1 )
+		if ((jour < 1 || jour > 31 || mois > 12 || mois < 1)
 				|| ((mois == 4 || mois == 6 || mois == 9 || mois == 11) && jour > 30)
 				|| (mois == 2 && jour > 28 && !bissextile) || (mois == 2 && jour > 29 && bissextile)) {
 
@@ -145,7 +196,9 @@ public class Controle {
 	}
 
 	/**
-	 * methode qui vérifie si la chaine est composée uniquement de caractères alphabetique
+	 * methode qui vérifie si la chaine est composée uniquement de caractères
+	 * alphabetique
+	 * 
 	 * @param reponse
 	 * @return
 	 */
