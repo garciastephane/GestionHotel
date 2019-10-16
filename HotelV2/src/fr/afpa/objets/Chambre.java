@@ -160,12 +160,6 @@ public class Chambre {
 	/**
 	 * Methode qui permet d'afficher les caractéristiques d'une chambre
 	 * 
-	 * @param numéro        : represente le numéro de la chambre à afficher
-	 * @param typeDeChambre : représente le type de chambre
-	 * @param superficie    : représente la superficie
-	 * @param vue           : répresente la(les) vue(s) de la chambre
-	 * @param chambre       occupée : savoir si une chambre est occupée à la date
-	 * @param liste         reservations : liste des réservations
 	 */
 
 	public void afficherEtatChambre() {
@@ -174,6 +168,16 @@ public class Chambre {
 		System.out.println("Type de la chambre: " + typeDeChambre);
 		System.out.println("Superficie de la chambres: " + superficie);
 		System.out.println("Vue de la chambre " + vue);
+		System.out.print("Liste options: ");
+		for(int i =0; i <listeOptions.length; i ++) {
+			if (i!= listeOptions.length -1) {
+				System.out.print(listeOptions[i] +  ", ");
+			}
+			else {
+				System.out.println(listeOptions[i] +".");
+			}
+		}
+			
 		System.out.print("Chambre occupée: ");
 		if (isReserve(LocalDate.now())) {
 			System.out.println("OUI");
