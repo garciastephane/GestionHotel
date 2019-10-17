@@ -315,7 +315,7 @@ public class Hotel {
 		if (Controle.isNumerique(choix, 10)) { // authentification d'un client
 
 			if (!Controle.isUnique(choix, listeLoginClient())) { // authentification reussit (client existant)
-				afficherReservationsClient(choix);
+				listeReservationsClient(choix);
 			} else { // authentification mauvaise (client non existant)
 				System.out.println("Erreur authentification client");
 			}
@@ -582,17 +582,38 @@ public class Hotel {
 			listeChambres[i].afficherEtatChambre();
 	}
 
-	public void afficherReservationsClient(String loginClient) {
+	/**
+	 * retourne la liste de reservation d'un client via son login
+	 * @param loginClient : le login du client
+	 * @return un tableau Reservation contenant la liste de reservation du client
+	 */
+	public Reservation[] listeReservationsClient(String loginClient) {
+		//tableau de la taille max de reservation c'un client
+		Reservation[] listeReservationsTemp = new Reservation[5];
+		int nbReservation=0;
+		
+		//recuperation des reservations du client
 		for (int i = 0; i < listeChambres.length; i++) {
 			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
 				if (listeChambres[i].getListeReservations()[j] != null
 						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
-					System.out.println(
-							"reservation de la " + listeChambres[i] + listeChambres[i].getListeReservations()[j]);
+					listeReservationsTemp[nbReservation]=listeChambres[i].getListeReservations()[j];
+					nbReservation++;
 				}
 
 			}
 		}
+		//le client n'a pas de reservation
+		if(nbReservation==0) {
+			return null;
+		}
+		
+		//tableau contenant le reservation du client (suppression des null)
+		Reservation[] listeReservations = new Reservation[nbReservation];
+		for (int i = 0; i < listeReservations.length; i++) {
+			listeReservations[i]=listeReservationsTemp[i];
+		}
+		return listeReservations;
 	}
 
 	/**
@@ -711,6 +732,7 @@ public class Hotel {
 		String loginClient = "";
 		Chambre[] chambresClient = new Chambre[5];
 		int indiceChambreClient = 0;
+		REservation[] listeReservationClient;
 
 		// authentification employé si echoue retour menu employé
 		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
@@ -771,6 +793,7 @@ public class Hotel {
 				loginClient = clients[choix].getLogin();
 			}
 
+			
 			// parcours de la liste des chambres de l'hotel
 			for (int indiceChambre = 0; indiceChambre < listeChambres.length; indiceChambre++) {
 
