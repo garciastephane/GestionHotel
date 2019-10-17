@@ -13,6 +13,7 @@ public class Hotel {
 												// transaction dans le fichier du jour
 	private String cheminFichierMdp;
 	private String cheminDossierFacture;
+	String loginClient = "";
 
 	/**
 	 * Constructeur Hotel, initialisation des chambres l'hotel, crÃ©eation d'un
@@ -152,22 +153,22 @@ public class Hotel {
 						listeChambres[i].getListeReservations()[j].getClient().getLogin(), listeLoginClientTemp)) {
 					listeLoginClientTemp[nbLogin] = listeChambres[i].getListeReservations()[j].getClient().getLogin();
 					nbLogin++;
-	
+
 				}
 			}
 		}
-	
+
 		if (nbLogin == 0) {
 			return new String[] { "" };
 		}
-	
+
 		// creation d'un tableau de login de la taille contenant tous les logins
 		// diffÃ©rents reelement present dans l'hotel
 		String[] listeLoginClient = new String[nbLogin];
 		for (int i = 0; i < listeLoginClient.length; i++) {
 			listeLoginClient[i] = listeLoginClientTemp[i];
 		}
-	
+
 		return listeLoginClient;
 	}
 
@@ -178,34 +179,34 @@ public class Hotel {
 	 * @return un tableau de Client ayant au moins une reservation en cours dans
 	 *         l'hotel
 	 */
-	
+
 	public Client[] getListeClients() {
 		// creation d'un tableau de login client de la taille maximum qu'il peut avoir
 		String[] listeLoginExistant = listeLoginClient();
 		Client[] listeClient = new Client[listeLoginExistant.length];
-	
+
 		if (listeLoginExistant[0].equals("")) {
 			return null;
 		}
-	
+
 		for (int indiceLogin = 0; indiceLogin < listeLoginExistant.length; indiceLogin++) {
-	
+
 			for (int indiceChambre = 0; indiceChambre < listeChambres.length; indiceChambre++) {
-	
+
 				for (int indiceReserv = 0; indiceReserv < listeChambres[indiceChambre]
 						.getListeReservations().length; indiceReserv++) {
-	
+
 					if (listeChambres[indiceChambre].getListeReservations()[indiceReserv] != null
 							&& listeChambres[indiceChambre].getListeReservations()[indiceReserv].getClient().getLogin()
 									.equals(listeLoginExistant[indiceLogin])) {
 						listeClient[indiceLogin] = listeChambres[indiceChambre].getListeReservations()[indiceReserv]
 								.getClient();
-	
+
 					}
 				}
 			}
 		}
-	
+
 		return listeClient;
 	}
 
@@ -215,7 +216,7 @@ public class Hotel {
 	 * @return
 	 */
 	public Client clientReservation(String loginClient) {
-	
+
 		for (int i = 0; i < listeChambres.length; i++) {
 			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
 				if (listeChambres[i].getListeReservations()[j] != null
@@ -230,7 +231,7 @@ public class Hotel {
 	/**
 	 * Affiche la liste de clients de l'hotel
 	 */
-	
+
 	public void afficherListeClient() {
 		Client[] listeClients = getListeClients();
 		for (int i = 0; i < listeClients.length; i++) {
@@ -356,7 +357,7 @@ public class Hotel {
 		String motDePasse;
 		String nom;
 		String prenom;
-	
+
 		// Demande des informations pour la crï¿½ation de l'employï¿½
 		System.out.println("Entrer le login de l'employe : ");
 		login = Saisie.saisieLoginEmploye(in);
@@ -366,14 +367,14 @@ public class Hotel {
 		nom = Saisie.saisieAlphabetic(in);
 		System.out.println("Entrer le prenom de l'employe : ");
 		prenom = Saisie.saisieAlphabetic(in);
-	
+
 		// ajout de l'employe dans la liste employe
 		Employe employeNouv = new Employe(login, nom, prenom);
 		Employe[] employesTemp = new Employe[employe.length];
 		for (int i = 0; i < employesTemp.length; i++) {
 			employesTemp[i] = employe[i];
 		}
-	
+
 		employe = new Employe[employe.length + 1];
 		for (int i = 0; i < employesTemp.length; i++) {
 			employe[i] = employesTemp[i];
@@ -381,7 +382,7 @@ public class Hotel {
 		employe[employe.length - 1] = employeNouv;
 		// ajout du login et mot de passe de l'employe au fichier mot de passe
 		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + login + ";" + motDePasse + ";" + motDePasse, true);
-	
+
 	}
 
 	/**
@@ -530,7 +531,8 @@ public class Hotel {
 			if (!listeChambres[i].isReservePeriode(dateDebut, dateFin)) { // si la chambre n'est pas rï¿½servï¿½
 
 				identique = false;
-				for (int j = 0; j < indiceChambreDispo; j++) { // on verifie que l'on a pas ajoutï¿½ une chambre identique
+				for (int j = 0; j < indiceChambreDispo; j++) { // on verifie que l'on a pas ajoutï¿½ une chambre
+																// identique
 					if (listeChambres[i].isIdentique(chambresDisponiblesTemp[j])) {
 						identique = true;
 					}
@@ -556,7 +558,8 @@ public class Hotel {
 			}
 		}
 
-		if (indiceChambreDispo > 0) { // si on a au moins une chambre ï¿½ proposï¿½ on recrï¿½e un tableau de la taille du
+		if (indiceChambreDispo > 0) { // si on a au moins une chambre ï¿½ proposï¿½ on recrï¿½e un tableau de la
+										// taille du
 										// nombre de chambres proposï¿½es
 			chambresDisponibles = new Chambre[indiceChambreDispo - 1];
 			for (int i = 0; i < chambresDisponibles.length; i++) {
@@ -640,17 +643,17 @@ public class Hotel {
 
 		if (listeLoginClient()[0].equals("")) { // l'hotel n'a pas de clients
 			System.out.println("il n'y a pas encore de client dans l'hotel");
-			clientReservation = employe.creationNouveauClient(in,listeLoginClient());
+			clientReservation = employe.creationNouveauClient(in, listeLoginClient());
 		} else {
 			System.out.println("Etes vous un nouveau client ? (oui ou non)");
 			if (Saisie.saisieOuiouNon(in).equals("oui")) { // rÃ©servation d'un nouveau client
-				clientReservation = employe.creationNouveauClient(in,listeLoginClient());
+				clientReservation = employe.creationNouveauClient(in, listeLoginClient());
 			} else { // reservation d'un client fidÃ¨le Ã  l'hotel
 				System.out.println("Voici la liste des clients de l'hotel : ");
 				afficherListeClient();
 				System.out.println("Veuillez entrer le login du client");
 				loginClient = Saisie.saisieLoginExistant(in, listeLoginClient());
-				clientReservation=clientReservation(loginClient);
+				clientReservation = clientReservation(loginClient);
 
 			}
 		}
@@ -713,10 +716,8 @@ public class Hotel {
 		reservation.payement(reservation.getMontantTotal(), in, cheminDossierTransaction);
 
 		// envoie facture
-		Facture.creationFacture(reservation, "nouvelle",employe,clientReservation);
+		Facture.creationFacture(reservation, "nouvelle", employe, clientReservation);
 	}
-
-
 
 	/**
 	 * methode de liberation d'une chambre
@@ -732,7 +733,7 @@ public class Hotel {
 		String loginClient = "";
 		Chambre[] chambresClient = new Chambre[5];
 		int indiceChambreClient = 0;
-		REservation[] listeReservationClient;
+		
 
 		// authentification employÃ© si echoue retour menu employÃ©
 		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
@@ -837,8 +838,51 @@ public class Hotel {
 			}
 			System.out.println("Entrer votre choix :  ");
 			chambresClient[Saisie.saisieChoixInt(in, 0, indiceChambreClient - 1)].liberationChambre(in);
+			
+		
 		}
-
 	}
+			
+			/** methode qui permets l'annulation d'une reservation
+			 * @param numeroReservation   : numéro de la réservation à modifier
+			 * @param listeReservations   : liste de réservations du client
+			 * @param loginClient         : login du client
+			 * @param in                  : Le scanner pour la saisie d'informations
+		    */
+		
+						
+			public void annulationReservation() {
+				
+				
+				/*// authentification employé si echoue retour menu employé
+				Scanner in;
+				if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
+					System.out.println("Erreur authentification");
+					return;
+									
+					}	
+				//affiche la liste des clients
+			System.out.println("Voici la liste des clients de l'hotel : ");
+			for (int i = 0; i < listeClients.length; i++) {
+				//System.out.println(listeClients[i]);
+				
+			System.out.println("Veuillez confirmez votre numéro de client");
+				for(int j = 0; j <listeLoginClient.length; j++) {
+					loginClient = Saisie.saisieLoginExistant( hotel.listeLoginClient());
+					clientReservation=hotel.clientReservation(loginClient);
+					
+						if (listeReservationsClient[i] != null && listeReservationsClient[i].getDateDebut().getDateFin()) {
+					return;
+					System.out.println("Vos réservations");
+					System.out.println("Quelle réservation souhaitez vous annuler");
+					if{
+						
+					}
+					
+				}*/
+				
+			}		
+		
+	}
+		
 
-}
