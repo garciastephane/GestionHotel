@@ -50,7 +50,6 @@ public class Reservation {
 		return dateFin;
 	}
 
-
 	public Client getClient() {
 		return client;
 	}
@@ -102,20 +101,21 @@ public class Reservation {
 	 */
 	public void payement(int montant, Scanner in, String cheminDossier) {
 		String numeroCarte;
-		
+
 		if (montant > 0) {
 			System.out.println("Vous devez : " + montant + " euros, merci de donner votre numéro de carte");
 		} else if (montant < 0) {
-			System.out.println("Nous vous remboursons : " + montant + " euros, merci de donner votre numéro de carte");
+			System.out.println(
+					"Nous vous remboursons : " + montant * -1 + " euros, merci de donner votre numéro de carte");
 		}
 
 		numeroCarte = in.nextLine();
 
-		//alimentation du fichier transaction
+		// alimentation du fichier transaction
 		if (montant > 0) {
 			transaction(LocalDate.now(), "payement", montant, numeroCarte, cheminDossier);
 		} else if (montant < 0) {
-			transaction(LocalDate.now(), "remboursement", montant, numeroCarte, cheminDossier);
+			transaction(LocalDate.now(), "remboursement", montant * -1, numeroCarte, cheminDossier);
 		}
 	}
 
@@ -129,15 +129,15 @@ public class Reservation {
 	 * @param cheminDossier : chemin dosssier transaction
 	 */
 	public void transaction(LocalDate date, String nature, int valeur, String numeroCarte, String cheminDossier) {
-		
+
 		String cheminFichier = cheminDossier + "transactions" + date.format(DateTimeFormatter.ofPattern("ddMMyyyy"))
 				+ ".txt";
-		
+
 		File f = new File(cheminFichier);
 		if (!f.exists()) {
 			Fichier.ecritureFichier(cheminFichier, "date;nature;valeur;numeroDeCarte", false);
 		}
-		
+
 		Fichier.ecritureFichier(cheminFichier, date + ";" + nature + ";" + valeur + ";" + numeroCarte, true);
 	}
 
@@ -146,15 +146,19 @@ public class Reservation {
 	}
 
 	public boolean isEnCours() {
-		LocalDate date =LocalDate.now();
-		if(date.plusDays(1).isAfter(dateDebut) && date.isBefore(dateFin) ) {
+		LocalDate date = LocalDate.now();
+		if (date.plusDays(1).isAfter(dateDebut) && date.isBefore(dateFin)) {
 			return true;
 		}
 		return false;
 	}
 
-	public void suppressionReservation() {
-		// TODO Auto-generated method stub
-		
+	public void modifReservationPayement(int tarifJour, LocalDate dateDebutNouv, LocalDate dateFinNouv, Scanner in) {
+		int montantInitial = calculMontant(tarifJour);
+		dateDebut = dateDebutNouv;
+		dateFin = dateFinNouv;
+		int nouveauMontant = calculMontant(tarifJour) - montantInitial;
+		payement(nouveauMontant, in, "ressources\\transactions\\");
+
 	}
 }
