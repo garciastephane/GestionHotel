@@ -52,6 +52,7 @@ public class Employe {
 		LocalDate dateFin;
 		int indiceChambreReserve = 0;
 		Chambre[] chambresDisponible;
+		Client clientReservation=null;
 		int i;
 
 		// authentification employé si echoue retour menu employé
@@ -60,32 +61,31 @@ public class Employe {
 			return;
 		}
 
-		if (hotel.getListeClients() == null) { // l'hotel n'a pas de clients
+		if (hotel.listeLoginClient()[0].equals("")) { // l'hotel n'a pas de clients
 			System.out.println("il n'y a pas encore de client dans l'hotel");
-			loginClient = creationNouveauClient(in, hotel);
+			clientReservation = creationNouveauClient(in, hotel);
 		} else {
 			System.out.println("Etes vous un nouveau client ? (oui ou non)");
 			if (Saisie.saisieOuiouNon(in).equals("oui")) { // réservation d'un nouveau client
-				loginClient = creationNouveauClient(in, hotel);
+				clientReservation = creationNouveauClient(in, hotel);
 			} else { // reservation d'un client fidèle à l'hotel
 				System.out.println("Voici la liste des clients de l'hotel : ");
 				hotel.afficherListeClient();
 				System.out.println("Veuillez entrer le login du client");
 				loginClient = Saisie.saisieLoginExistant(in, hotel.listeLoginClient());
+				clientReservation=hotel.clientReservation(loginClient);
 			}
 		}
 
 		// récupération de l'indice du client de la réservation dans la liste clients de
 		// l'hotel
-		for (i = 0; i < hotel.getListeClients().length; i++) {
-			if (hotel.getListeClients()[i].getLogin().equals(loginClient)) {
-				indiceClient = i;
-				break;
-			}
+		if(clientReservation==null) {
+			System.out.println("ERREUR");
+			return;
 		}
 
 		// verification du nombre de réservation du client
-		if (hotel.getListeClients()[indiceClient].getNombreDeReservations() >= 5) {
+		if (clientReservation.getNombreDeReservations() >= 5) {
 			System.out.println("Désolé, vous avez déjà 5 réservations dans notre hotel");
 			return;
 		}
@@ -102,6 +102,7 @@ public class Employe {
 		chambresDisponible = hotel.listeChambreDispo(dateDebut, dateFin);
 		if (chambresDisponible == null) {
 			System.out.println("Désolé nous n'avons aucune chambre à vous proposer");
+			return;
 		}
 
 		// affichage chambres disponibles
@@ -119,10 +120,9 @@ public class Employe {
 		}
 
 		// creation de la reservation
-		Reservation reservation = new Reservation(dateDebut, dateFin, chambresDisponible[indiceChambreReserve],
-				hotel.getListeClients()[indiceClient]);
+		Reservation reservation = new Reservation(dateDebut, dateFin, clientReservation, chambresDisponible[indiceChambreReserve].getTarif());
 
-		reservation.affichage();
+		reservation.affichage(chambresDisponible[indiceChambreReserve]);
 		System.out.println("Confirmation de la réservation de la chambre (oui ou non) ?");
 		reponse = Saisie.saisieOuiouNon(in);
 
@@ -135,15 +135,14 @@ public class Employe {
 		chambresDisponible[indiceChambreReserve].ajoutReservation(reservation);
 
 		// +1 au nombre de réservations du client
-		hotel.getListeClients()[indiceClient]
-				.setNombreDeReservations(hotel.getListeClients()[indiceClient].getNombreDeReservations() + 1);
+		clientReservation.setNombreDeReservations(clientReservation.getNombreDeReservations() + 1);
 
 		// payement de la reservation + alimentation fichier transactions
 		reservation.payement(reservation.getMontantTotal(), in, hotel.getCheminDossierTransaction());
 
 		// envoie facture
 		Facture.creationFacture(reservation, "nouvelle", reservation.getMontantTotal());
-		Facture.creationFacture(reservation, "annulation", -(reservation.getMontantTotal()));
+		//Facture.creationFacture(reservation, "annulation", -(reservation.getMontantTotal()));
 	}
 
 	/**
@@ -153,7 +152,7 @@ public class Employe {
 	 * @param hotel : L'hotel dans lequel est créé le nouvaeu client
 	 * @return une chaine de caractères représentant le login du nouveau client
 	 */
-	public String creationNouveauClient(Scanner in, Hotel hotel) {
+	public Client creationNouveauClient(Scanner in, Hotel hotel) {
 		String login;
 		String nom;
 		String prenom;
@@ -177,10 +176,8 @@ public class Employe {
 		System.out.println("Entrer le mail client (adresse valide)");
 		mail = Saisie.saisieMail(in);
 		System.out.println("-----------------------------------------------");
-		Client client = new Client(login, nom, prenom, mail);
-		hotel.ajoutClient(client);
-
-		return login;
+		return new Client(login, nom, prenom, mail);
+		
 
 	}
 
@@ -192,6 +189,7 @@ public class Employe {
 		String loginClient="";
 		Chambre[] chambresClient = new Chambre[5];
 		int indiceChambreClient = 0;
+		Client clientLiberation;
 		
 		
 		System.out.println("1 : libération en utilisant le  numéro de chambre. \n 2 : libération via nom client.");
@@ -215,7 +213,7 @@ public class Employe {
 			for (int i = 0; i < hotel.getListeClients().length; i++) {
 				if(hotel.getListeClients()[i].getNom().equals(nomClient)) {
 					nbClientNom++;
-					loginClient=hotel.getListeClients()[i].getLogin();
+					clientLiberation=hotel.getListeClients()[i];
 				}
 			}
 			if(nbClientNom==0) { //aucun client avec ce nom existe
@@ -230,6 +228,7 @@ public class Employe {
 					if(hotel.getListeClients()[i].getNom().equals(nomClient)) {
 						clients[nbClientNom]=hotel.getListeClients()[i];
 						nbClientNom++;
+						clientLiberation=hotel.getListeClients()[i];
 					}
 				}
 				System.out.println("Il y a plusieurs clients avec le nom demandé. Veuillez choisir le client correspondant");
@@ -238,7 +237,7 @@ public class Employe {
 				}
 				System.out.println("Votre choix  : ");
 				choix=Saisie.saisieChoixInt(in, 0, clients.length-1);
-				loginClient=clients[choix].getLogin();	
+				clientLiberation=clients[choix];	
 			}
 			
 		

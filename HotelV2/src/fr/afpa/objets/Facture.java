@@ -19,7 +19,7 @@ public class Facture {
 
 	public static String creationFacture(Reservation reservation, String type, int montantAPayer) {
 		String cheminFacture = cheminDossierFacture + type+"reservation" + reservation.getNumeroReservation() + ".pdf";
-		Document document = ItextGenerator.createDocument(cheminFacture);
+		/*Document document = ItextGenerator.createDocument(cheminFacture);
 
 		String paragraphe = "\n  FACTURE réservation n°" + reservation.getNumeroReservation() + "   \n";
 		document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.CENTER, 20, new DottedBorder(3)));
@@ -93,7 +93,7 @@ public class Facture {
 			}
 
 		document.add(table);
-		document.close();
+		document.close();*/
 		return cheminFacture;
 	}
 

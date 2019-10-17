@@ -8,8 +8,7 @@ import java.util.Scanner;
 public class Hotel {
 	private Chambre[] listeChambres;
 	private String nom;
-	private Client[] listeClients;
-	private Employe employe;
+	private Employe[] employe;
 	private String cheminDossierTransaction; // chemin dossier puis ajout du fichier de lors de l'ecriture de la
 												// transaction dans le fichier du jour
 	private String cheminFichierMdp;
@@ -21,13 +20,14 @@ public class Hotel {
 		// initialisation listeChambres via ficier csv
 		creationHotel("ressources\\ListeChambres_V3.csv");
 
-		//creation employe admin
-		employe=new Employe("GH000", "nom admin", "prenom admin");
-		
-		//ecriture login/mot de passe de l'employe dans un fichier texte
+		// creation employe admin réintialisation des employe à chaque demarage du
+		// programme
+		employe = new Employe[1];
+		employe[0] = new Employe("GH000", "nom admin", "prenom admin");
+
+		// ecriture login/mot de passe de l'employe dans un fichier texte
 		Fichier.ecritureFichier(cheminFichierMdp, "fonction;login;mdp;mdpAdmin", false);
 		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + "GH000" + ";" + "admin" + ";" + "admin", true);
-		listeClients = null;
 
 		// appel methode de gestion de l'hotel;
 		gestionHotel();
@@ -50,20 +50,11 @@ public class Hotel {
 		return nom;
 	}
 
-	public void setListeClients(Client[] listeClients_) {
-		listeClients = listeClients_;
-
-	}
-
-	public Client[] getListeClients() {
-		return listeClients;
-	}
-
-	public void setEmploye(Employe employe_) {
+	public void setEmploye(Employe[] employe_) {
 		employe = employe_;
 	}
 
-	public Employe getEmploye() {
+	public Employe[] getEmploye() {
 		return employe;
 	}
 
@@ -158,12 +149,16 @@ public class Hotel {
 
 			if (!Controle.isUnique(choix, listeLoginClient())) { // authentification r�ussit (client existant)
 
-				for (int i = 0; i < listeClients.length; i++) { // recup�ration du client dans la liste client
+				afficherReservationClient(choix);
 
-					if (listeClients[i].getLogin().equals(choix)) {
-						listeClients[i].afficherReservations(); // affiche ces r�servations ou message erreur
-					}
-				}
+				/*
+				 * for (int i = 0; i < listeClients.length; i++) { // recup�ration du client
+				 * dans la liste client
+				 * 
+				 * if (listeClients[i].getLogin().equals(choix)) {
+				 * listeClients[i].afficherReservations(); // affiche ces r�servations ou
+				 * message erreur } }
+				 */
 			} else { // authentification mauvaise (client non existant)
 				System.out.println("Erreur authentification client");
 			}
@@ -173,8 +168,16 @@ public class Hotel {
 		if (Controle.isAlphaNumerique(choix, 5)) { // authentification employ�
 
 			if (Controle.authentificationEmploye(in, choix, cheminFichierMdp)) { // authentification via mot de passe
+				int indiceEmploye = 0;
+				for (int i = 0; i < employe.length; i++) {
+					if (employe[i].getlogin().equals(choix)) {
+						indiceEmploye = i;
+						break;
+					}
+				}
+
 				affichageMenu(); // authentification r�ussit
-				while (choixEmploye(in)) { // affichage menu employ� jusqu' a ce qu'il d�cide de quitter
+				while (choixEmploye(in, indiceEmploye)) { // affichage menu employ� jusqu' a ce qu'il d�cide de quitter
 					affichageMenu();
 				}
 			} else {
@@ -213,7 +216,7 @@ public class Hotel {
 	 * @param in : le Scanner pour la saisie utilisateur
 	 * @return : false si l'employ� veut quitter le Menu, true sinon
 	 */
-	public boolean choixEmploye(Scanner in) {
+	public boolean choixEmploye(Scanner in, int indiceEmploye) {
 		String choix = in.nextLine();
 
 		switch (choix) {
@@ -233,9 +236,10 @@ public class Hotel {
 			afficherNumeroDerniereChambreLibre();
 			break;
 		case "F":
-			employe.reservationChambre(this, in);
+			employe[indiceEmploye].reservationChambre(this, in);
 			break;
-		case "G": employe.liberationChambre(in, this);
+		case "G":
+			employe[indiceEmploye].liberationChambre(in, this);
 			break;
 		case "H":
 			break;
@@ -271,11 +275,21 @@ public class Hotel {
 		System.out.println("Entrer le prenom de l'employ� : ");
 		prenom = Saisie.saisieAlphabetic(in);
 
-		// instantiation de l'employ� de la banque
-		employe = new Employe(login, nom, prenom);
+		// ajout de l'employ� de la banque
 
+		Employe employeNouv = new Employe(login, nom, prenom);
+		Employe[] employesTemp = new Employe[employe.length];
+		for (int i = 0; i < employesTemp.length; i++) {
+			employesTemp[i] = employe[i];
+		}
+
+		employe = new Employe[employe.length + 1];
+		for (int i = 0; i < employesTemp.length; i++) {
+			employe[i] = employesTemp[i];
+		}
+		employe[employe.length - 1] = employeNouv;
 		// ajout du login et mot de passe de l'employ� au fichier mot de passe
-		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + login + ";" + motDePasse, false);
+		Fichier.ecritureFichier(cheminFichierMdp, "employe;" + login + ";" + motDePasse + ";" + motDePasse, true);
 
 	}
 
@@ -285,50 +299,86 @@ public class Hotel {
 	 * @return un tableau de chaine de caract�res repr�sentant la liste des login
 	 *         d�j� existant
 	 */
-	public String[] listeLoginClient() {
-		if (listeClients == null) { // si aucun client dans l'hotel retour d'un tableau avec une chaine vide
-			String[] listeLogin = { "" };
-			return listeLogin;
+
+	public Client[] getListeClients() {
+		// creation d'un tableau de login client de la taille maximum qu'il peut avoir
+		String[] listeLoginExistant = listeLoginClient();
+		Client[] listeClient = new Client[listeLoginExistant.length];
+
+		if (listeLoginExistant[0].equals("")) {
+			return null;
 		}
-		String[] listeLogin = new String[listeClients.length]; // creation d'un tableau contenant la liste des logins
-		for (int i = 0; i < listeLogin.length; i++) {
-			listeLogin[i] = listeClients[i].getLogin();
+
+		for (int indiceLogin = 0; indiceLogin < listeLoginExistant.length; indiceLogin++) {
+
+			for (int indiceChambre = 0; indiceChambre < listeChambres.length; indiceChambre++) {
+
+				for (int indiceReserv = 0; indiceReserv < listeChambres[indiceChambre]
+						.getListeReservations().length; indiceReserv++) {
+
+					if (listeChambres[indiceChambre].getListeReservations()[indiceReserv] != null
+							&& listeChambres[indiceChambre].getListeReservations()[indiceReserv].getClient().getLogin()
+									.equals(listeLoginExistant[indiceLogin])) {
+						listeClient[indiceLogin] = listeChambres[indiceChambre].getListeReservations()[indiceReserv]
+								.getClient();
+
+					}
+				}
+			}
 		}
-		return listeLogin;
+
+		return listeClient;
 	}
 
-	/**
-	 * ajoute un nouveau client dans la liste client
-	 * 
-	 * @param client : le Client � ajouter
-	 */
-	public void ajoutClient(Client client) {
+	public String[] listeLoginClient() {
+		// creation d'un tableau de login client de la taille maximum qu'il peut avoir
+		String[] listeLoginClientTemp = new String[listeChambres.length * 5];
+		int nbLogin = 0;
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				// ajout d'un login si il n'est pas deja present dans le tableau
+				if (listeChambres[i].getListeReservations()[j] != null && Controle.isUnique(
+						listeChambres[i].getListeReservations()[j].getClient().getLogin(), listeLoginClientTemp)) {
+					listeLoginClientTemp[nbLogin] = listeChambres[i].getListeReservations()[j].getClient().getLogin();
+					nbLogin++;
 
-		if (listeClients == null) { // si aucun Client dans l'hotel
-			listeClients = new Client[1];
-			listeClients[0] = client;
-			return;
+				}
+			}
 		}
 
-		Client[] listeClientTemp = new Client[listeClients.length]; // recup�ration de la liste Client de l'hotel
-		for (int i = 0; i < listeClientTemp.length; i++) {
-			listeClientTemp[i] = listeClients[i];
+		if (nbLogin == 0) {
+			return new String[] { "" };
 		}
 
-		listeClients = new Client[listeClientTemp.length + 1]; // cr�ation d'une nouvelle liste Client de taille + 1 par
-																// rapport � la pr�c�dante
-
-		for (int i = 0; i < listeClientTemp.length; i++) { // copie de l'ancienne liste dans la nouvelle
-			listeClients[i] = listeClientTemp[i];
+		// creation d'un tableau de login de la taille contenant tous les logins
+		// différents reelement present dans l'hotel
+		String[] listeLoginClient = new String[nbLogin];
+		for (int i = 0; i < listeLoginClient.length; i++) {
+			listeLoginClient[i] = listeLoginClientTemp[i];
 		}
-		listeClients[listeClients.length - 1] = client; // ajout du nouveau Client en derni�re position
 
+		return listeLoginClient;
+	}
+
+	public Client clientReservation(String loginClient) {
+
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				if (listeChambres[i].getListeReservations()[j] != null
+						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
+					return listeChambres[i].getListeReservations()[j].getClient();
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
 	 * Affiche la liste de clients de l'hotel
 	 */
+
 	public void afficherListeClient() {
+		Client[] listeClients = getListeClients();
 		for (int i = 0; i < listeClients.length; i++) {
 			System.out.println(listeClients[i]);
 		}
@@ -445,6 +495,19 @@ public class Hotel {
 	public void afficherEtatHotel() {
 		for (int i = 0; i < listeChambres.length; i++)
 			listeChambres[i].afficherEtatChambre();
+	}
+
+	public void afficherReservationClient(String loginClient) {
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				if (listeChambres[i].getListeReservations()[j] != null
+						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
+					System.out.println(
+							"reservation de la " + listeChambres[i] + listeChambres[i].getListeReservations()[j]);
+				}
+
+			}
+		}
 	}
 
 }

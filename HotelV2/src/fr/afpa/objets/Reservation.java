@@ -9,7 +9,6 @@ public class Reservation {
 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	private Chambre chambre;
 	private Client client;
 	private int montantTotal;
 	private int numeroReservation;
@@ -20,12 +19,11 @@ public class Reservation {
 	 * @param dateDebut
 	 * @param dateFin
 	 */
-	public Reservation(LocalDate dateDebut_, LocalDate dateFin_, Chambre chambre_, Client client_) {
+	public Reservation(LocalDate dateDebut_, LocalDate dateFin_, Client client_, int tarifJour) {
 		dateDebut = dateDebut_;
 		dateFin = dateFin_;
-		chambre = chambre_;
 		client = client_;
-		montantTotal = calculMontant();
+		montantTotal = calculMontant(tarifJour);
 		nombreReservation++;
 		numeroReservation = nombreReservation;
 	}
@@ -52,13 +50,6 @@ public class Reservation {
 		return dateFin;
 	}
 
-	public Chambre getChambre() {
-		return chambre;
-	}
-
-	public void setChambre(Chambre chambre_) {
-		chambre = chambre_;
-	}
 
 	public Client getClient() {
 		return client;
@@ -87,7 +78,7 @@ public class Reservation {
 	/**
 	 * Affiche la réservation
 	 */
-	public void affichage() {
+	public void affichage(Chambre chambre) {
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("Votre réservation : ");
 		System.out.println("Du " + dateDebut + " au " + dateFin);
@@ -107,7 +98,7 @@ public class Reservation {
 	}
 
 	/**
-	 * methode qui effectue le payement et aliment le fichier de transactions
+	 * methode qui effectue le payement et alimente le fichier de transactions
 	 */
 	public void payement(int montant, Scanner in, String cheminDossier) {
 		String numeroCarte;
@@ -150,8 +141,8 @@ public class Reservation {
 		Fichier.ecritureFichier(cheminFichier, date + ";" + nature + ";" + valeur + ";" + numeroCarte, true);
 	}
 
-	public int calculMontant() {
-		return dateFin.compareTo(dateDebut) * chambre.getTarif();
+	public int calculMontant(int tarifJour) {
+		return dateFin.compareTo(dateDebut) * tarifJour;
 	}
 
 	public boolean isEnCours() {
