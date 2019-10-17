@@ -17,7 +17,7 @@ public class Facture {
 
 	private static String cheminDossierFacture = "ressources\\facture_pdf\\";
 
-	public static String creationFacture(Reservation reservation, String type, int montantAPayer) {
+	public static String creationFacture(Reservation reservation, String type, Employe employe,Client clientReservation) {
 		String cheminFacture = cheminDossierFacture + type+"reservation" + reservation.getNumeroReservation() + ".pdf";
 		/*Document document = ItextGenerator.createDocument(cheminFacture);
 

@@ -2,6 +2,7 @@ package fr.afpa.objets;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Chambre {
 
@@ -200,11 +201,11 @@ public class Chambre {
 	}
 	
 	
-	public void liberationChambre() {
+	public void liberationChambre(Scanner in) {
 		for (int i = 0; i < listeReservations.length; i++) {
-			System.out.println(i);
 			if (listeReservations[i] != null && listeReservations[i].isEnCours()) {
-				listeReservations[i].suppressionReservation();
+				listeReservations[i].getClient().setNombreDeReservations(listeReservations[i].getClient().getNombreDeReservations()-1);
+				listeReservations[i].modifReservationPayement(tarif,listeReservations[i].getDateDebut(), LocalDate.now(),in);
 				listeReservations[i] = null;
 				return;
 			}
