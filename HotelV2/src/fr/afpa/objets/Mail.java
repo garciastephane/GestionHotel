@@ -19,12 +19,10 @@ public class Mail {
 	public static void envoiMail (String cheminPieceJointe, String adresseMail)  {
 
 		try {	
-				String adresse = "garciastephan60@gmail.com";
+				//String adresse = "garciastephan60@gmail.com";
 
 		//ouverture d'une session.
-		
-		
-		
+						
 		String user = "garciastephan60@gmail.com";
 		String pass = "Milan2019";
 		String serveur = "smtp.gmail.com";
@@ -35,9 +33,7 @@ public class Mail {
 		props.put("mail.smtp.port", 587);
 		props.put("mail.smtp.auth", "true");
 		Session session= Session.getInstance(props);
-
-		
-		
+				
 		//Le message
 		
 		Message message = new MimeMessage(session);
@@ -48,13 +44,14 @@ public class Mail {
 		message.setRecipients(Message.RecipientType.TO, internetAdresses);
 		message.setSubject("Mail de confirmation de réservation");
 	    message.setText("");
+	    
 	 // La pièce jointe
 	 	MimeBodyPart attachment = new MimeBodyPart();
-	 	attachment.setFileName(cheminPieceJointe);
+	 	attachment.attachFile(cheminPieceJointe);
 	 		
 	 	// Le corps
 	 	MimeBodyPart body = new MimeBodyPart();
-		body.setText("\"Madame / Monsieur,\\n Nous vous confirmons la réservation de votre chambre dans notre hôtel CDA au nom de Madame/Monsieur (nom de la personne) pour la période suivante: (dates).\\n En vous remerciant par avance, nous vous adressons, Madame/Monsieur, nos salutations distinguées.\\n Signature Electronique\");\r\n ");
+		body.setText("Madame / Monsieur,\n Nous vous confirmons la réservation de votre chambre dans notre hôtel CDA au nom de Madame/Monsieur (nom de la personne) pour la période suivante: (dates).\n En vous remerciant par avance, nous vous adressons, Madame/Monsieur, nos salutations distinguées.\n Signature Electronique\");\r\n ");
 		//MimeBodyPart bodyText = new MimeBodyPart();
 		//String fichier = "C:\\Bureau\\mai.text";
 		//bodyText.attachFile(fichier);
@@ -73,7 +70,8 @@ public class Mail {
 	    
 	   
 		}catch(Exception e){
-			
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 }
 	}
