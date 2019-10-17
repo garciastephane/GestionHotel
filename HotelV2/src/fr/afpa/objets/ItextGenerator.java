@@ -61,6 +61,7 @@ public class ItextGenerator {
 	public static Cell remplissageCellDottedBorder(String chaine) {
 		Cell cell = new Cell().add(new Paragraph(chaine));
 		cell.setWidth(40);
+		cell.setHeight(20);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setTextAlignment(TextAlignment.CENTER);
 		cell.setBorderBottom(new DottedBorder(1));

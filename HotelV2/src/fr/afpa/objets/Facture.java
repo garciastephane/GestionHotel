@@ -1,5 +1,6 @@
 package fr.afpa.objets;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.itextpdf.io.font.FontConstants;
@@ -17,86 +18,95 @@ public class Facture {
 
 	private static String cheminDossierFacture = "ressources\\facture_pdf\\";
 
-	public static String creationFacture(Reservation reservation, String type, Employe employe,Client clientReservation) {
-		String cheminFacture = cheminDossierFacture + type+"reservation" + reservation.getNumeroReservation() + ".pdf";
-		/*Document document = ItextGenerator.createDocument(cheminFacture);
+	public static String creationFacture(Reservation reservation, Employe employe, Chambre chambre) {
 
-		String paragraphe = "\n  FACTURE réservation n°" + reservation.getNumeroReservation() + "   \n";
-		document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.CENTER, 20, new DottedBorder(3)));
-		document.add(new Paragraph("\n"));
-		
-		
-		if (type.equals("annulation")) {
-			paragraphe = "ANNULATION";
-			document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.CENTER, 25, Border.NO_BORDER)
-					.setFontColor(ColorConstants.RED));
-		}
-		
-		
-		paragraphe = "Info client : \nNom : " + reservation.getClient().getPrenom() + "\nPrenom : "
-				+ reservation.getClient().getNom() + "\nMail : " + reservation.getClient().getMail();
+		String cheminFacture = cheminDossierFacture +  "reservation" + reservation.getNumeroReservation()
+				+ ".pdf";
 
-		document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.LEFT, 10, Border.NO_BORDER));
-		document.add(new Paragraph("\n"));
+		Document document = ItextGenerator.createDocument(cheminFacture);
 
-		paragraphe = "date de séjour : du "
-				+ reservation.getDateDebut().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " au "
-				+ reservation.getDateFin().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		document.add(entete(reservation.getNumeroReservation()));
 
-		document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.LEFT, 12, Border.NO_BORDER).setBold());
+		document.add(infosClient(reservation.getClient()));
 
-		paragraphe = "Info chambre : \nNuméro : " + reservation.getChambre().getNumero() + ", type : "
-				+ reservation.getChambre().getTypeDeChambre() + "\nVue : " + reservation.getChambre().getVue()
-				+ ", superficie " + reservation.getChambre().getSuperficie() + "\nliste options : \n";
-		for (int i = 0; i < reservation.getChambre().getListeOptions().length; i++) {
-			if (i != reservation.getChambre().getListeOptions().length - 1)
-				paragraphe += reservation.getChambre().getListeOptions()[i] + ", ";
+		document.add(dateSejour(reservation.getDateDebut(), reservation.getDateFin()));
+
+		document.add(infosChambre(chambre));
+
+		document.add(tableauRes(reservation, chambre.getTarif()));
+		 
+		document.close();
+		return cheminFacture;
+	}
+
+	public static Paragraph entete(int numeroReservation) {
+
+		Paragraph paragraphe = new Paragraph("\n  FACTURE réservation n°" + numeroReservation + "   \n");
+		paragraphe.setTextAlignment(TextAlignment.CENTER);
+		paragraphe.setFontSize(20);
+		paragraphe.setBorder(new DottedBorder(3));
+		return paragraphe;
+
+	}
+
+	public static Paragraph infosClient(Client client) {
+		Paragraph paragraphe = new Paragraph("\nInfo client : \nNom : " + client.getPrenom() + "\nPrenom : "
+				+ client.getNom() + "\nMail : " + client.getMail()+ "\nLogin : " + client.getLogin());
+		paragraphe.setFontSize(12);
+		paragraphe.setTextAlignment(TextAlignment.LEFT);
+		return paragraphe;
+
+	}
+
+	public static Paragraph dateSejour(LocalDate dateDebut, LocalDate dateFin) {
+		Paragraph paragraphe = new Paragraph(
+				"\nDate de séjour : du " + dateDebut.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " au "
+						+ dateFin.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+		paragraphe.setTextAlignment(TextAlignment.LEFT).setFontSize(12).setBold();
+		return paragraphe;
+
+	}
+
+	public static Paragraph infosChambre(Chambre chambre) {
+		Paragraph paragraphe = new Paragraph("\nInfo chambre : \nNuméro : " + chambre.getNumero() + ", type : "
+				+ chambre.getTypeDeChambre() + "\nVue : " + chambre.getVue() + ", superficie " + chambre.getSuperficie()
+				+ "\nliste options : \n");
+		for (int i = 0; i < chambre.getListeOptions().length; i++) {
+			if (i != chambre.getListeOptions().length - 1)
+				paragraphe.add(chambre.getListeOptions()[i] + ", ");
 			else
-				paragraphe += reservation.getChambre().getListeOptions()[i] + ".";
+				paragraphe.add(chambre.getListeOptions()[i] + ".\n\n\n  ");
 		}
+		paragraphe.setTextAlignment(TextAlignment.LEFT).setFontSize(12);
 
-		document.add(ItextGenerator.ajoutParagraphe(paragraphe, TextAlignment.LEFT, 12, Border.NO_BORDER));
+		return paragraphe;
 
+	}
+
+	public static Table tableauRes(Reservation reservation, int tarif) {
 		Table table = new Table(3, true);
+		
 		table.addHeaderCell(ItextGenerator.remplissageCellDottedBorder(" Tarif journalier "));
 
 		table.addHeaderCell(ItextGenerator.remplissageCellDottedBorder(" Nombre de jours "));
 
 		table.addHeaderCell(ItextGenerator.remplissageCellDottedBorder(" Total "));
 
-		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + reservation.getChambre().getTarif()));
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + tarif));
 		table.addCell(ItextGenerator
 				.remplissageCellDottedBorder("" + reservation.getDateFin().compareTo(reservation.getDateDebut())));
-		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + reservation.getMontantTotal()));
-		
-		if(type.equals("nouvelle") || type.equals("annulation")) {
-		table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-		table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-		table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-		}
-		
-		if(type.equals("modification") || type.equals("liberation")) {
-			table.addCell(ItextGenerator.remplissageCellDottedBorder("Montant déjà payer"));
-			table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-			table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-			}
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + reservation.calculMontant(tarif)));
 
-		if(montantAPayer>=0) {
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("  "));
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("  "));
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("  "));
+
 		table.addCell(ItextGenerator.remplissageCellDottedBorder("Montant à payer : "));
-		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + montantAPayer));
-		table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-		}
-		else {
-			table.addCell(ItextGenerator.remplissageCellDottedBorder("Montant remboursé : "));
-			table.addCell(ItextGenerator.remplissageCellDottedBorder("" + -montantAPayer));
-			table.addCell(ItextGenerator.remplissageCellDottedBorder(""));
-			}
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("  "));
+		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + reservation.calculMontant(tarif)));
 
-		document.add(table);
-		document.close();*/
-		return cheminFacture;
+		return table;
 	}
-
-	
 
 }
