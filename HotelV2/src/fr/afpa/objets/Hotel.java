@@ -437,7 +437,7 @@ public class Hotel {
 		case "G":
 			liberationChambre(employe[indiceEmploye], in);
 			break;
-		case "H":
+		case "H": modificationReservation(employe[indiceEmploye], in);
 			break;
 		case "I":
 			break;
@@ -587,34 +587,35 @@ public class Hotel {
 
 	/**
 	 * retourne la liste de reservation d'un client via son login
+	 * 
 	 * @param loginClient : le login du client
 	 * @return un tableau Reservation contenant la liste de reservation du client
 	 */
 	public Reservation[] listeReservationsClient(String loginClient) {
-		//tableau de la taille max de reservation c'un client
+		// tableau de la taille max de reservation c'un client
 		Reservation[] listeReservationsTemp = new Reservation[5];
-		int nbReservation=0;
-		
-		//recuperation des reservations du client
+		int nbReservation = 0;
+
+		// recuperation des reservations du client
 		for (int i = 0; i < listeChambres.length; i++) {
 			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
 				if (listeChambres[i].getListeReservations()[j] != null
 						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
-					listeReservationsTemp[nbReservation]=listeChambres[i].getListeReservations()[j];
+					listeReservationsTemp[nbReservation] = listeChambres[i].getListeReservations()[j];
 					nbReservation++;
 				}
 
 			}
 		}
-		//le client n'a pas de reservation
-		if(nbReservation==0) {
+		// le client n'a pas de reservation
+		if (nbReservation == 0) {
 			return null;
 		}
-		
-		//tableau contenant le reservation du client (suppression des null)
+
+		// tableau contenant le reservation du client (suppression des null)
 		Reservation[] listeReservations = new Reservation[nbReservation];
 		for (int i = 0; i < listeReservations.length; i++) {
-			listeReservations[i]=listeReservationsTemp[i];
+			listeReservations[i] = listeReservationsTemp[i];
 		}
 		return listeReservations;
 	}
@@ -716,7 +717,7 @@ public class Hotel {
 		reservation.payement(reservation.getMontantTotal(), in, cheminDossierTransaction);
 
 		// envoie facture
-		Facture.creationFacture(reservation, "nouvelle", employe, clientReservation);
+		// Facture.creationFacture(reservation, "nouvelle", employe, clientReservation);
 	}
 
 	/**
@@ -733,7 +734,6 @@ public class Hotel {
 		String loginClient = "";
 		Chambre[] chambresClient = new Chambre[5];
 		int indiceChambreClient = 0;
-		
 
 		// authentification employÃ© si echoue retour menu employÃ©
 		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
@@ -794,7 +794,6 @@ public class Hotel {
 				loginClient = clients[choix].getLogin();
 			}
 
-			
 			// parcours de la liste des chambres de l'hotel
 			for (int indiceChambre = 0; indiceChambre < listeChambres.length; indiceChambre++) {
 
@@ -838,51 +837,86 @@ public class Hotel {
 			}
 			System.out.println("Entrer votre choix :  ");
 			chambresClient[Saisie.saisieChoixInt(in, 0, indiceChambreClient - 1)].liberationChambre(in);
-			
-		
+
 		}
 	}
-			
-			/** methode qui permets l'annulation d'une reservation
-			 * @param numeroReservation   : numéro de la réservation à modifier
-			 * @param listeReservations   : liste de réservations du client
-			 * @param loginClient         : login du client
-			 * @param in                  : Le scanner pour la saisie d'informations
-		    */
-		
-						
-			public void annulationReservation() {
-				
-				
-				/*// authentification employé si echoue retour menu employé
-				Scanner in;
-				if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
-					System.out.println("Erreur authentification");
-					return;
-									
-					}	
-				//affiche la liste des clients
-			System.out.println("Voici la liste des clients de l'hotel : ");
-			for (int i = 0; i < listeClients.length; i++) {
-				//System.out.println(listeClients[i]);
-				
-			System.out.println("Veuillez confirmez votre numéro de client");
-				for(int j = 0; j <listeLoginClient.length; j++) {
-					loginClient = Saisie.saisieLoginExistant( hotel.listeLoginClient());
-					clientReservation=hotel.clientReservation(loginClient);
-					
-						if (listeReservationsClient[i] != null && listeReservationsClient[i].getDateDebut().getDateFin()) {
-					return;
-					System.out.println("Vos réservations");
-					System.out.println("Quelle réservation souhaitez vous annuler");
-					if{
-						
-					}
-					
-				}*/
-				
-			}		
-		
-	}
-		
 
+	public void modificationReservation(Employe employe, Scanner in) {
+		String loginClient;
+		int choix;
+		int numeroReservationModifier;
+		LocalDate dateDebut;
+		LocalDate dateFin;
+		int indiceChambre = 0;
+		int ancienPrix = 0;
+
+		// authentification employé si echoue retour menu employé
+
+		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
+			System.out.println("Erreur authentification");
+			return;
+		}
+
+		// affiche la liste des clients
+		System.out.println("La liste des clients de l'hotel : ");
+		Client[] listeClients = getListeClients();
+		for (int i = 0; i < listeClients.length; i++) {
+			System.out.println(listeClients[i]);
+		}
+
+		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa réservation");
+		loginClient = Saisie.saisieLoginExistant(in, listeLoginClient());
+		Reservation[] listeReservationClients = listeReservationsClient(loginClient);
+		for (int k = 0; k < listeReservationClients.length; k++) {
+			System.out.println(k + " : " + listeReservationClients[k]);
+		}
+		System.out.println("Veuillez entrer votre choix : ");
+		choix = Saisie.saisieChoixInt(in, 0, listeReservationClients.length - 1);
+		numeroReservationModifier = listeReservationClients[choix].getNumeroReservation();
+
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				if (listeChambres[i].getListeReservations()[j] != null && listeChambres[i].getListeReservations()[j]
+						.getNumeroReservation() == numeroReservationModifier) {
+					indiceChambre = i;
+					break;
+				}
+			}
+		}
+
+		// demande des dates de sÃ©jour valide
+		System.out.println("quel est votre date de dÃ©but de sÃ©jour dans notre hotel (format dd/MM/yyyy)");
+		dateDebut = LocalDate.parse(Saisie.saisieDate(in, LocalDate.now()), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		System.out.println("quel est votre date de fin du sÃ©jour dans notre hotel");
+		dateFin = LocalDate.parse(Saisie.saisieDate(in, dateDebut.plusDays(1)),
+				DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+		for (int i = 0; i < listeChambres[indiceChambre].getListeReservations().length; i++) {
+			if (listeChambres[indiceChambre].getListeReservations()[i] != null
+					&& listeChambres[indiceChambre].getListeReservations()[i]
+							.getNumeroReservation() != numeroReservationModifier) {
+
+				if (dateDebut.compareTo(listeChambres[indiceChambre].getListeReservations()[i].getDateDebut()) >= 0) {
+					// Vérifier si modifier réservation est possible
+				}
+			}
+
+			for (int j = 0; j < listeChambres[indiceChambre].getListeReservations().length; j++) {
+				if (listeChambres[indiceChambre].getListeReservations()[j] !=null && listeChambres[indiceChambre].getListeReservations()[j]
+						.getNumeroReservation() == numeroReservationModifier) {
+					ancienPrix = listeChambres[indiceChambre].getListeReservations()[j]
+							.calculMontant(listeChambres[indiceChambre].getTarif());
+					listeChambres[indiceChambre].getListeReservations()[j]
+							.modifReservationPayement(listeChambres[indiceChambre].getTarif(), dateDebut, dateFin, in);
+					Facture.modificationFacture(listeChambres[indiceChambre].getListeReservations()[j], employe,
+							listeChambres[indiceChambre], cheminDossierFacture, ancienPrix);
+					return;
+				}
+			}
+
+		}
+
+	}
+  
+
+}

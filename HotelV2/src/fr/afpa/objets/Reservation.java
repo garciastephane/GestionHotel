@@ -12,6 +12,8 @@ public class Reservation {
 	private Client client;
 	private int montantTotal;
 	private int numeroReservation;
+	
+	
 
 	private static int nombreReservation;
 
@@ -162,3 +164,5 @@ public class Reservation {
 
 	}
 }
+	
+	
