@@ -51,7 +51,7 @@ public class Mail {
 	 		
 	 	// Le corps
 	 	MimeBodyPart body = new MimeBodyPart();
-		body.setText("Madame / Monsieur,\n Nous vous confirmons la réservation de votre chambre dans notre hôtel CDA au nom de Madame/Monsieur (nom de la personne) pour la période suivante: (dates).\n En vous remerciant par avance, nous vous adressons, Madame/Monsieur, nos salutations distinguées.\n Signature Electronique\";\r\n ");
+		body.setText("Madame / Monsieur,\n Nous vous confirmons la réservation de votre chambre dans notre hôtel CDA. Ci-joint la facture.\n En vous remerciant par avance, nous vous adressons nos salutations distinguées.\n\n ");
 		//MimeBodyPart bodyText = new MimeBodyPart();
 		//String fichier = "C:\\Bureau\\mai.text";
 		//bodyText.attachFile(fichier);

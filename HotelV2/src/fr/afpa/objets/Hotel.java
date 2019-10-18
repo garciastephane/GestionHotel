@@ -439,7 +439,7 @@ public class Hotel {
 			break;
 		case "H": modificationReservation(employe[indiceEmploye], in);
 			break;
-		case "I":
+		case "I": annulationReservation(employe[indiceEmploye], in);
 			break;
 		case "Q":
 			return false;
@@ -856,7 +856,10 @@ public class Hotel {
 			System.out.println("Erreur authentification");
 			return;
 		}
-
+		if(getListeClients()==null) {
+			System.out.println("Il y a aucunes réservations à modifier");
+			return;
+		}
 		// affiche la liste des clients
 		System.out.println("La liste des clients de l'hotel : ");
 		Client[] listeClients = getListeClients();
@@ -900,6 +903,7 @@ public class Hotel {
 					// Vérifier si modifier réservation est possible
 				}
 			}
+		}
 
 			for (int j = 0; j < listeChambres[indiceChambre].getListeReservations().length; j++) {
 				if (listeChambres[indiceChambre].getListeReservations()[j] !=null && listeChambres[indiceChambre].getListeReservations()[j]
@@ -908,15 +912,77 @@ public class Hotel {
 							.calculMontant(listeChambres[indiceChambre].getTarif());
 					listeChambres[indiceChambre].getListeReservations()[j]
 							.modifReservationPayement(listeChambres[indiceChambre].getTarif(), dateDebut, dateFin, in);
-					Facture.modificationFacture(listeChambres[indiceChambre].getListeReservations()[j], employe,
+					String cheminFacture= Facture.modificationFacture(listeChambres[indiceChambre].getListeReservations()[j], employe,
 							listeChambres[indiceChambre], cheminDossierFacture, ancienPrix);
+					Mail.envoiMail(cheminFacture, listeChambres[indiceChambre].getListeReservations()[j].getClient().getMail());
 					return;
 				}
 			}
 
-		}
+		
 
 	}
   
 
+	
+	public void annulationReservation (Employe employe, Scanner in) {
+		
+		String loginClient;
+		int choix;
+		int numeroReservationModifier;
+		int indiceChambre = 0;
+
+		// authentification employé si echoue retour menu employé
+
+		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
+			System.out.println("Erreur authentification");
+			return;
+		}
+
+		if(getListeClients()==null) {
+			System.out.println("Il y a aucunes réservations à annuler");
+			return;
+		}
+		// affiche la liste des clients
+		System.out.println("La liste des clients de l'hotel : ");
+		Client[] listeClients = getListeClients();
+		for (int i = 0; i < listeClients.length; i++) {
+			System.out.println(listeClients[i]);
+		}
+
+		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa réservation");
+		loginClient = Saisie.saisieLoginExistant(in, listeLoginClient());
+		Reservation[] listeReservationClients = listeReservationsClient(loginClient);
+		for (int k = 0; k < listeReservationClients.length; k++) {
+			System.out.println(k + " : " + listeReservationClients[k]);
+		}
+		System.out.println("Veuillez entrer votre choix : ");
+		choix = Saisie.saisieChoixInt(in, 0, listeReservationClients.length - 1);
+		numeroReservationModifier = listeReservationClients[choix].getNumeroReservation();
+
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				if (listeChambres[i].getListeReservations()[j] != null && listeChambres[i].getListeReservations()[j]
+						.getNumeroReservation() == numeroReservationModifier) {
+					indiceChambre = i;
+					break;
+				}
+			}
+		}
+
+		for (int j = 0; j < listeChambres[indiceChambre].getListeReservations().length; j++) {
+			if (listeChambres[indiceChambre].getListeReservations()[j] !=null && listeChambres[indiceChambre].getListeReservations()[j]
+					.getNumeroReservation() == numeroReservationModifier) {
+				if (listeChambres[indiceChambre].getListeReservations()[j].getDateDebut().isBefore(LocalDate.now())) {
+					System.out.println("La reservation est en cours, veuillez passer par le service de liberation");
+					return;
+				}
+				listeChambres[indiceChambre].getListeReservations()[j]
+						.modifReservationPayement(listeChambres[indiceChambre].getTarif(), LocalDate.now(), LocalDate.now(), in);
+				listeChambres[indiceChambre].getListeReservations()[j] = null;
+				return;
+			}
+		}
+	}
+	
 }

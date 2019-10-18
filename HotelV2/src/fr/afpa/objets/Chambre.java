@@ -164,40 +164,31 @@ public class Chambre {
 	 */
 
 	public void afficherEtatChambre() {
-		System.out.println();
-		System.out.println("Num�ro de la chambre: " + numero);
-		System.out.println("Type de la chambre: " + typeDeChambre);
-		System.out.println("Superficie de la chambres: " + superficie);
-		System.out.println("Vue de la chambre " + vue);
-		System.out.print("Liste options: ");
-		for(int i =0; i <listeOptions.length; i ++) {
-			if (i!= listeOptions.length -1) {
-				System.out.print(listeOptions[i] +  ", ");
-			}
-			else {
-				System.out.println(listeOptions[i] +".");
-			}
-		}
-			
-		System.out.print("Chambre occup�e: ");
 		if (isReserve(LocalDate.now())) {
-			System.out.println("OUI");
-		} else {
-			System.out.println("NON");
-		}
-
-		System.out.println("Liste reservations de la chambre : ");
-
-		for (int i = 0; i < listeReservations.length; i++) {
-			if (listeReservations[i] != null) {
-				System.out.print("Du " + listeReservations[i].getDateDebut());
-				System.out.print(" au " + listeReservations[i].getDateFin());
-				System.out.println(". Nom Client: " + listeReservations[i].getClient().getNom());
+			
+			System.out.println();
+			System.out.println("Numero de la chambre: " + numero);
+			System.out.println("Type de la chambre: " + typeDeChambre);
+			System.out.println("Superficie de la chambres: " + superficie);
+			System.out.println("Vue de la chambre " + vue);
+			System.out.print("Liste options: ");
+			for(int i =0; i <listeOptions.length; i ++) {
+				if (i!= listeOptions.length -1) {
+					System.out.print(listeOptions[i] +  ", ");
+				}
+				else {
+					System.out.println(listeOptions[i] +".");
+				}
 			}
-
-		}
-		System.out.println();
-		System.out.println("---------------------------------------------------------------");
+			for (int i = 0; i < listeReservations.length; i++) {
+				if (listeReservations[i]!= null && listeReservations[i].isEnCours() ) {
+					System.out.println("Information du client: " + listeReservations[i].getClient().getNom() + " " + listeReservations[i].getClient().getPrenom() );
+					System.out.println("Date de sejour : du " + listeReservations[i].getDateDebut() + " au " + listeReservations[i].getDateFin());
+					
+				}
+			}
+			System.out.println("---------------------------------------------------------------");
+		} 
 	}
 	
 	

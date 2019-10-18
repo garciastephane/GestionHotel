@@ -84,7 +84,7 @@ public class Controle {
 
 	/**
 	 * methode qui verifie si la chaine de caractere et non vide (les espaces sont
-	 * considéré comme vide)
+	 * concidéré comme vide)
 	 * 
 	 * @param chaine chaine de caractère à vérifier
 	 * @return true si la chaine de caractère est non vide et n'est pas constitué
@@ -120,7 +120,8 @@ public class Controle {
 		
 		if (mail.length()<5)
 			return false;
-						
+			
+			
 		// un string avec . apparaît deux fois de suite
 		if (mail.contains("..") )
 			return false;
@@ -157,16 +158,18 @@ public class Controle {
 				return false;
 			}
 			 return true;
-						
+					
+			
 	}
 			
+	
+
 	/**
 	 * methode qui retourne si la chaine de caractère est une date valide
 	 * 
 	 * @param date chaine de caractère à tester (jj/mm/aaaa)
 	 * @return true si la chaine est une date valide, false sinon
 	 */
-	
 	public static boolean isDateValide(String date) {
 
 		if (date.length() != 10 || date.charAt(2) != '/' || date.charAt(5) != '/'
