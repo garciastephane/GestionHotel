@@ -514,8 +514,8 @@ public class Hotel {
 	}
 
 	/**
-	 * retourne la liste des indices des chambres disponibles lors de la  période et ayant moins de
-	 * 5 reservations
+	 * retourne la liste des indices des chambres disponibles lors de la période et
+	 * ayant moins de 5 reservations
 	 * 
 	 * @param dateDebut : date de debut de reservation
 	 * @param dateFin   : date de fin de reservation
@@ -528,20 +528,38 @@ public class Hotel {
 		boolean identique;
 		boolean reservationMax = false;
 
-		for (int indiceChambreHotel = 0; indiceChambreHotel < listeChambres.length; indiceChambreHotel++) { // parcours la liste des chambres de l'hotel
+		for (int indiceChambreHotel = 0; indiceChambreHotel < listeChambres.length; indiceChambreHotel++) { // parcours
+																											// la liste
+																											// des
+																											// chambres
+																											// de
+																											// l'hotel
 
-			if (!listeChambres[indiceChambreHotel].isReservePeriode(dateDebut, dateFin)) { // si la chambre n'est pas r�serv�
+			if (!listeChambres[indiceChambreHotel].isReservePeriode(dateDebut, dateFin)) { // si la chambre n'est pas
+																							// r�serv�
 
 				identique = false;
-				for (int indiceChambreDispo = 0; indiceChambreDispo < indiceChambreDispoMax; indiceChambreDispo++) { // on verifie que l'on a pas ajout� une chambre
-																// identique
-					if (listeChambres[indiceChambreHotel].isIdentique(listeChambres[indiceChambresDisponiblesTemp[indiceChambreDispo]])) {
+				for (int indiceChambreDispo = 0; indiceChambreDispo < indiceChambreDispoMax; indiceChambreDispo++) { // on
+																														// verifie
+																														// que
+																														// l'on
+																														// a
+																														// pas
+																														// ajout�
+																														// une
+																														// chambre
+					// identique
+					if (listeChambres[indiceChambreHotel]
+							.isIdentique(listeChambres[indiceChambresDisponiblesTemp[indiceChambreDispo]])) {
 						identique = true;
 					}
 				}
-				for (int j = 0; j < listeChambres[indiceChambreHotel].getListeReservations().length; j++) { // on verifie que la chambre
-																							// n'a pas atteint sa
-																							// capacite max
+				for (int j = 0; j < listeChambres[indiceChambreHotel].getListeReservations().length; j++) { // on
+																											// verifie
+																											// que la
+																											// chambre
+					// n'a pas atteint sa
+					// capacite max
 					reservationMax = true;
 					if (listeChambres[indiceChambreHotel].getListeReservations()[j] == null) {
 						reservationMax = false;
@@ -562,8 +580,8 @@ public class Hotel {
 		}
 
 		if (indiceChambreDispoMax > 0) { // si on a au moins une chambre � propos� on recr�e un tableau de la
-										// taille du
-										// nombre de chambres propos�es
+											// taille du
+											// nombre de chambres propos�es
 			indiceChambresDisponibles = new int[indiceChambreDispoMax];
 			for (int i = 0; i < indiceChambresDisponibles.length; i++) {
 				indiceChambresDisponibles[i] = indiceChambresDisponiblesTemp[i];
@@ -572,8 +590,6 @@ public class Hotel {
 
 		return indiceChambresDisponibles;
 	}
-	
-	
 
 	/**
 	 * Methode qui permet d'afficher l' ï¿½tat de l'hotel
@@ -586,6 +602,8 @@ public class Hotel {
 	 * @param liste      reservations : liste des rï¿½servations
 	 */
 	public void afficherEtatHotel() {
+		System.out.println("Le chiffre d'affaires de la journée est de : " + calculCA());
+
 		for (int i = 0; i < listeChambres.length; i++)
 			listeChambres[i].afficherEtatChambre();
 	}
@@ -722,9 +740,9 @@ public class Hotel {
 		reservation.payement(reservation.getMontantTotal(), in, cheminDossierTransaction);
 
 		// envoie facture
-		String cheminFacture = Facture.creationFacture(reservation, employe, listeChambres[indiceChambresDisponible[indiceChambreReserve]],
-				cheminDossierFacture);
-		//Mail.envoiMail(cheminFacture, reservation.getClient().getMail());
+		String cheminFacture = Facture.creationFacture(reservation, employe,
+				listeChambres[indiceChambresDisponible[indiceChambreReserve]], cheminDossierFacture);
+		// Mail.envoiMail(cheminFacture, reservation.getClient().getMail());
 	}
 
 	/**
@@ -741,8 +759,7 @@ public class Hotel {
 		String loginClient = "";
 		Chambre[] chambresClient = new Chambre[5];
 		int indiceChambreClient = 0;
-		int indiceChambreChoisie=0;
-		
+		int indiceChambreChoisie = 0;
 
 		// authentification employé si echoue retour menu employé
 		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
@@ -750,10 +767,11 @@ public class Hotel {
 			return;
 		}
 
-		System.out.println("1 : libération en utilisant le  numéro de chambre. \n 2 : libération en utilisant le nom du client.");
+		System.out.println(
+				"1 : libération en utilisant le  numéro de chambre. \n 2 : libération en utilisant le nom du client.");
 		choix = Saisie.saisieChoixInt(in, 1, 2);
 		if (choix == 1) { // liberation via le numero de chambre
-			System.out.println("Veuillez entrer le numero de la chambre : ");
+			System.out.println("Veuillez entrer le numero de la chambre (entre 1 et " + listeChambres.length +" ) :");
 			numeroChambre = Saisie.saisieChoixInt(in, 1, listeChambres.length);
 			// si la chambre est occupee en ce moment on l'a libere
 			if (listeChambres[numeroChambre - 1].isReserve(LocalDate.now())) {
@@ -763,7 +781,7 @@ public class Hotel {
 				System.out.println("ERREUR : Cette chambre n'est pas occupée en ce moment.");
 				return;
 			}
-		} else { //liberation via le nom client
+		} else { // liberation via le nom client
 
 			System.out.println("Veuillez entrer le nom du client : ");
 			nomClient = Saisie.saisieAlphabetic(in);
@@ -793,8 +811,8 @@ public class Hotel {
 				System.out.println(
 						"Il y a plusieurs clients avec le nom demandé. Veuillez choisir le client correspondant");
 				for (int i = 0; i < clients.length; i++) {
-					System.out.println(i + " : login : " + clients[i].getLogin() + " nom : " + clients[i].getNom() + " prenom : "
-							+ clients[i].getPrenom());
+					System.out.println(i + " : login : " + clients[i].getLogin() + " nom : " + clients[i].getNom()
+							+ " prenom : " + clients[i].getPrenom());
 				}
 				System.out.println("Votre choix  : ");
 
@@ -803,7 +821,7 @@ public class Hotel {
 				loginClient = clients[choix].getLogin();
 			}
 
-			//Recherche des chambres que le client occupe en ce monent
+			// Recherche des chambres que le client occupe en ce monent
 			// parcours de la liste des chambres de l'hotel
 			for (int indiceChambre = 0; indiceChambre < listeChambres.length; indiceChambre++) {
 
@@ -837,7 +855,7 @@ public class Hotel {
 			// une seule chambre est occupée par le client, libération de cette chambre
 			if (indiceChambreClient == 1) {
 				for (int i = 0; i < listeChambres.length; i++) {
-					if(chambresClient[0].getNumero()==listeChambres[i].getNumero()) {
+					if (chambresClient[0].getNumero() == listeChambres[i].getNumero()) {
 						listeChambres[i].liberationChambre(in);
 						return;
 					}
@@ -847,18 +865,19 @@ public class Hotel {
 			// choix de la chambre à libérer
 			System.out.println("Voici la liste des chambres que  le client occupe en ce moment  : ");
 			for (int i = 0; i < indiceChambreClient; i++) {
-				System.out.println(i + " : numero : " + chambresClient[i].getNumero() + " type : " + chambresClient[i].getTypeDeChambre());
+				System.out.println(i + " : numero : " + chambresClient[i].getNumero() + " type : "
+						+ chambresClient[i].getTypeDeChambre());
 			}
 			System.out.println("Entrer votre choix :  ");
-			
-			indiceChambreChoisie=Saisie.saisieChoixInt(in, 0, indiceChambreClient - 1);
+
+			indiceChambreChoisie = Saisie.saisieChoixInt(in, 0, indiceChambreClient - 1);
 			for (int i = 0; i < listeChambres.length; i++) {
-				if(chambresClient[indiceChambreChoisie].getNumero()==listeChambres[i].getNumero()) {
+				if (chambresClient[indiceChambreChoisie].getNumero() == listeChambres[i].getNumero()) {
 					listeChambres[i].liberationChambre(in);
 					return;
 				}
 			}
-		
+
 		}
 	}
 
@@ -1006,4 +1025,26 @@ public class Hotel {
 		}
 	}
 
+	/**
+	 * service qui permet de calculer le chiffres d'affaires de la journee
+	 * 
+	 * @return : un entier representant le chiffre d'affaires
+	 */
+	public int calculCA() {
+		int chiffreAffaires = 0;
+		String cheminFichier = cheminDossierTransaction + "transactions"
+				+ LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")) + ".txt";
+		String listeTransactions[] = Fichier.lecture(cheminFichier);
+		String[] transaction;
+		for (int i = 1; i < listeTransactions.length; i++) {
+			transaction = listeTransactions[i].split(";");
+			if (transaction.length>1 && transaction[1].equals("remboursement")) {
+				chiffreAffaires -= Integer.parseInt(transaction[2]);
+			} else if (transaction.length>1 && transaction[1].equals("payement")) {
+				chiffreAffaires += Integer.parseInt(transaction[2]);
+			}
+		}
+		return chiffreAffaires;
+
+	}
 }
