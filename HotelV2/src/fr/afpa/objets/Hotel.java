@@ -316,7 +316,8 @@ public class Hotel {
 		if (Controle.isNumerique(choix, 10)) { // authentification d'un client
 
 			if (!Controle.isUnique(choix, listeLoginClient())) { // authentification reussit (client existant)
-				listeReservationsClient(choix);
+				System.out.println("\n");
+				affichageListeReservationsClient(choix);
 			} else { // authentification mauvaise (client non existant)
 				System.out.println("Erreur authentification client");
 			}
@@ -342,7 +343,9 @@ public class Hotel {
 				System.out.println("Erreur d'authentification"); // authentification mauvaise(login ou mot de passe non
 																	// valide)
 			}
+			return true;
 		}
+		System.out.println("ERREUR");
 		return true;
 
 	}
@@ -1046,5 +1049,33 @@ public class Hotel {
 		}
 		return chiffreAffaires;
 
+	}
+	
+	/**
+	 * retourne la liste de reservation d'un client via son login
+	 * 
+	 * @param loginClient : le login du client
+	 * @return un tableau Reservation contenant la liste de reservation du client
+	 */
+	public void affichageListeReservationsClient(String loginClient) {
+	
+		// recuperation des reservations du client
+		for (int i = 0; i < listeChambres.length; i++) {
+			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
+				if (listeChambres[i].getListeReservations()[j] != null
+						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
+				System.out.println("- Reservation n° " + listeChambres[i].getListeReservations()[j].getNumeroReservation() + " ,chambre n°" + listeChambres[i].getNumero() +  " ,type : " + listeChambres[i].getTypeDeChambre());
+				System.out.println("Periode de reservation : du " + listeChambres[i].getListeReservations()[j].getDateDebut() + " au " + listeChambres[i].getListeReservations()[j].getDateFin() );
+				System.out.println("---------------------------------------------------------------");
+				}
+
+			}
+			
+		}
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
