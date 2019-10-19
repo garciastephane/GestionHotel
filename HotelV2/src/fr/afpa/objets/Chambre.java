@@ -191,12 +191,20 @@ public class Chambre {
 		} 
 	}
 	
-	
+	/**
+	 * service de liberation de la chambre
+	 * @param in : Le scanner pour la saisie du numero de carte
+	 */
 	public void liberationChambre(Scanner in) {
+		
+		//recherche de la réservation en cours(celle qu'il faut liberer)
 		for (int i = 0; i < listeReservations.length; i++) {
+			
 			if (listeReservations[i] != null && listeReservations[i].isEnCours()) {
-				listeReservations[i].getClient().setNombreDeReservations(listeReservations[i].getClient().getNombreDeReservations()-1);
+				 
+				//modification de la reservation en mettant la date de fin a aujourd'hui et on effectue le remboursement et alimentation du fichier transaction
 				listeReservations[i].modifReservationPayement(tarif,listeReservations[i].getDateDebut(), LocalDate.now(),in);
+				//la reservation n'est plus d'actualite, on la passe a null
 				listeReservations[i] = null;
 				return;
 			}

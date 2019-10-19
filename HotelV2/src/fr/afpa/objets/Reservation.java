@@ -77,13 +77,13 @@ public class Reservation {
 	}
 
 	/**
-	 * Affiche la réservation
+	 * Affiche la rï¿½servation
 	 */
 	public void affichage(Chambre chambre) {
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("Votre réservation : ");
+		System.out.println("Votre rï¿½servation : ");
 		System.out.println("Du " + dateDebut + " au " + dateFin);
-		System.out.println("Chambre n°" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
+		System.out.println("Chambre nï¿½" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
 				+ chambre.getSuperficie());
 		System.out.println(" vue : " + chambre.getVue() + " tarif journalier : " + chambre.getTarif());
 		System.out.println("Options de la chambre : ");
@@ -105,10 +105,10 @@ public class Reservation {
 		String numeroCarte;
 
 		if (montant > 0) {
-			System.out.println("Vous devez : " + montant + " euros, merci de donner votre numéro de carte");
+			System.out.println("Vous devez : " + montant + " euros, merci de donner votre numï¿½ro de carte");
 		} else if (montant < 0) {
 			System.out.println(
-					"Nous vous remboursons : " + montant * -1 + " euros, merci de donner votre numéro de carte");
+					"Nous vous remboursons : " + montant * -1 + " euros, merci de donner votre numï¿½ro de carte");
 		}
 
 		numeroCarte = in.nextLine();
@@ -127,7 +127,7 @@ public class Reservation {
 	 * @param date          : date de la transaction
 	 * @param nature        : nature de la transaction
 	 * @param valeur        : valeur de la transaction
-	 * @param numeroCarte   : numéro de carte du client
+	 * @param numeroCarte   : numï¿½ro de carte du client
 	 * @param cheminDossier : chemin dosssier transaction
 	 */
 	public void transaction(LocalDate date, String nature, int valeur, String numeroCarte, String cheminDossier) {
@@ -159,6 +159,10 @@ public class Reservation {
 		int montantInitial = calculMontant(tarifJour);
 		dateDebut = dateDebutNouv;
 		dateFin = dateFinNouv;
+		
+		if(dateFin.equals(LocalDate.now())) { // la reservation est termine
+			client.setNombreDeReservations(client.getNombreDeReservations()-1);
+		}
 		int nouveauMontant = calculMontant(tarifJour) - montantInitial;
 		payement(nouveauMontant, in, "ressources\\transactions\\");
 
