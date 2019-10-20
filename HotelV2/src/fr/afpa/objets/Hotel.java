@@ -788,7 +788,11 @@ public class Hotel {
 
 			System.out.println("Veuillez entrer le nom du client : ");
 			nomClient = Saisie.saisieAlphabetic(in);
-
+			
+			if(getListeClients()==null) {
+				System.out.println("Aucun client dans l'hotel");
+				return;
+			}
 			// verif si client existe et recuperation du nombre de client ayant ce nom
 			for (int i = 0; i < getListeClients().length; i++) {
 				if (getListeClients()[i].getNom().equals(nomClient)) {

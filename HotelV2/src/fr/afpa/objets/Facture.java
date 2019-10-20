@@ -1,6 +1,7 @@
 package fr.afpa.objets;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import com.itextpdf.io.font.FontConstants;
@@ -32,6 +33,9 @@ public class Facture {
 		String cheminFacture = cheminDossierFacture + "reservation" + reservation.getNumeroReservation() + ".pdf";
 
 		Document document = ItextGenerator.createDocument(cheminFacture);
+		if(document==null) {
+			return "";
+		}
 
 		document.add(entete(reservation.getNumeroReservation()));
 		document.add(infoClientEtEmploye(reservation.getClient(), employe));
@@ -158,7 +162,7 @@ public class Facture {
 
 		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + tarifJournalier));
 		table.addCell(ItextGenerator
-				.remplissageCellDottedBorder("" + reservation.getDateFin().compareTo(reservation.getDateDebut())));
+				.remplissageCellDottedBorder("" + Period.between(reservation.getDateDebut(), reservation.getDateFin()).getDays()));
 		table.addCell(ItextGenerator.remplissageCellDottedBorder("" + reservation.calculMontant(tarifJournalier) + "€"));
 
 		table.addCell(ItextGenerator.remplissageCellDottedBorder("  "));

@@ -2,6 +2,7 @@ package fr.afpa.objets;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -144,7 +145,8 @@ public class Reservation {
 	}
 
 	public int calculMontant(int tarifJour) {
-		return dateFin.compareTo(dateDebut) * tarifJour;
+		
+		return Period.between(dateDebut, dateFin).getDays() * tarifJour;
 	}
 
 	public boolean isEnCours() {
