@@ -98,7 +98,7 @@ public class Saisie {
 	}
 
 	/**
-	 * 
+	 * demande a l employe de entrer un nombre valide par rapport au choix ci-dessus
 	 * @param in
 	 * @param max
 	 * @return

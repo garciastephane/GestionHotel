@@ -35,54 +35,89 @@ public class Reservation {
 	public String toString() {
 		return "Reservation [dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", client=" + client + "]";
 	}
-
+	/** modifie la date de debut de la reservation du client
+	*
+	* @param dateDebut_ : la date de debut de la reservation
+	*/
 	public void setDateDebut(LocalDate dateDebut_) {
 		dateDebut = dateDebut_;
 	}
-
+	/**
+	 * retourne la nouvelle date de debut de la reservation
+	 *
+	 * @return : un LocalDate correspondant a la date de debut de la reservation
+	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
 
 	}
-
+	/** modifie la date de fin de la reservation du client
+	*
+	* @param dateFin_ : la date de fin de la reservation
+	*/
 	public void setDateFin(LocalDate dateFin_) {
 		dateFin = dateFin_;
 	}
-
+	/**
+	 * retourne la nouvelle date de fin de la reservation
+	 *
+	 * @return : un LocalDate correspondant a la date de fin de la reservation
+	 */
 	public LocalDate getDateFin() {
 		return dateFin;
 	}
-
+	/**
+	 * retourne le nouveau client de la reservation
+	 *
+	 * @return : un Client correspondant au nouveau client de la reservation
+	 */
 	public Client getClient() {
 		return client;
 	}
-
+	/** modifie le client de la reservation
+	*
+	* @param client_ : le client de la reservation
+	*/
 	public void setClient(Client client_) {
 		client = client_;
 	}
-
+	/**
+	 * retourne le nouveau numero de la reservation  du client de la chambre
+	 *
+	 * @return : un entier correspondant au numero de la reservation de la chambre
+	 */
 	public int getNumeroReservation() {
 		return numeroReservation;
 	}
-
+	/** modifie le numero de la reservation du client de la chambre
+	*
+	* @param numero de la reservation_ : le numero de la reservation du client
+	*/
 	public void setNumeroReservation(int numeroReservation_) {
 		numeroReservation = numeroReservation_;
 	}
-
+	/**
+	 * retourne le nouveau montant total de la reservation du client
+	 *
+	 * @return : un entier correspondant au montant total de la reservation du client
+	 */
 	public int getMontantTotal() {
 		return montantTotal;
 	}
-
+	/** modifie le montant total de la reservation du client de la chambre
+	*
+	* @param montant total_ : le montant total de la reservation du client
+	*/
 	public void setMontantTotal(int montantTotal_) {
 		montantTotal = montantTotal_;
 	}
 
 	/**
-	 * Affiche la r�servation
+	 * Affiche la reservation
 	 */
 	public void affichage(Chambre chambre) {
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("Votre r�servation : ");
+		System.out.println("Votre reservation : ");
 		System.out.println("Du " + dateDebut + " au " + dateFin);
 		System.out.println("Chambre n�" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
 				+ chambre.getSuperficie());
@@ -106,10 +141,10 @@ public class Reservation {
 		String numeroCarte;
 
 		if (montant > 0) {
-			System.out.println("Vous devez : " + montant + " euros, merci de donner votre num�ro de carte");
+			System.out.println("Vous devez : " + montant + " euros, merci de donner votre numero de carte");
 		} else if (montant < 0) {
 			System.out.println(
-					"Nous vous remboursons : " + montant * -1 + " euros, merci de donner votre num�ro de carte");
+					"Nous vous remboursons : " + montant * -1 + " euros, merci de donner votre numero de carte");
 		}
 
 		numeroCarte = in.nextLine();
@@ -148,6 +183,10 @@ public class Reservation {
 		
 		return Period.between(dateDebut, dateFin).getDays() * tarifJour;
 	}
+	/**
+	 * methode qui permets de confirmer si une reservation est en cours
+	 * 	 
+	 */
 
 	public boolean isEnCours() {
 		LocalDate date = LocalDate.now();
@@ -157,6 +196,13 @@ public class Reservation {
 		return false;
 	}
 
+	/**
+	 * methode qui modifie le paiement de la reservation
+	 * @param tarifJour              : tarif d un jour de la chambre
+	 * @param dateDebutNouv          : date de debut de la nouvelle reservation
+	 * @param dateFinNouv            : date de fin de la nouvelle reservation
+	 * @param in                     : scanner qui recupere la transaction
+	 */
 	public void modifReservationPayement(int tarifJour, LocalDate dateDebutNouv, LocalDate dateFinNouv, Scanner in) {
 		int montantInitial = calculMontant(tarifJour);
 		dateDebut = dateDebutNouv;

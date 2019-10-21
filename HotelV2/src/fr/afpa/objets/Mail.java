@@ -21,10 +21,16 @@ public class Mail {
 		try {	
 				//String adresse = "garciastephan60@gmail.com";
 
-		//ouverture d'une session.
+		
+			/**
+			 * ouverture d'une session
+			 * @param user : mail envoi 
+			 * @param pass: mot de passe mail envoi
+			 * @param serveur : serveur envoi du mail  
+			 */
 						
-		String user = "garciastephan60@gmail.com";
-		String pass = "Milan2019";
+		String user = "roubaixmailtestafpa@gmail.com";
+		String pass = "afpa2019";
 		String serveur = "smtp.gmail.com";
 		
 		Properties props= System.getProperties();
@@ -34,7 +40,13 @@ public class Mail {
 		props.put("mail.smtp.auth", "true");
 		Session session= Session.getInstance(props);
 				
-		//Le message
+	
+		/**
+		 * creation du message
+		 * @param session : mail envoi 
+		 * @param user: mot de passe mail envoi
+		 */
+			
 		
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(user));
@@ -45,10 +57,18 @@ public class Mail {
 		message.setSubject("Mail de confirmation de réservation");
 	    message.setText("");
 	    
+	    /**
+		 * ajout piece jointe
+		 * @param cheminPieceJointe: le chemin ou est stocke la piece jointe
+		 */
 	 // La pièce jointe
 	 	MimeBodyPart attachment = new MimeBodyPart();
 	 	attachment.attachFile(cheminPieceJointe);
-	 		
+	 	
+	 	/**
+		 * ajout du corps du message
+		 
+		 */	
 	 	// Le corps
 	 	MimeBodyPart body = new MimeBodyPart();
 		body.setText("Madame / Monsieur,\n Nous vous confirmons la réservation de votre chambre dans notre hôtel CDA. Ci-joint la facture.\n En vous remerciant par avance, nous vous adressons nos salutations distinguées.\n\n ");
@@ -61,7 +81,13 @@ public class Mail {
 	    multipart.addBodyPart(attachment);
 	    //multipart.addBodyPart(bodyText);
 	    message.setContent(multipart);
-			
+	    /**
+		 * envoi du message
+		 * @param serveur : connection au serveur pour l'envoi 
+		 * @param user: user d ou part l envoi du mail
+		 * @param message: message a envoyer
+		 * @param internetAdresses:adresse qui recevra l envoi
+		 */ 
 		//Transport
 	    Transport transport = session.getTransport("smtp");
 		transport.connect(serveur, user, pass);

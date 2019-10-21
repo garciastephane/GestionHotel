@@ -42,7 +42,7 @@ public class ItextGenerator {
 	/**
 	 * creation d'une Image
 	 * @param chemin : chemin de l'image
-	 * @return une Image
+	 * @return une image
 	 */
 	public static Image createImage(String chemin) {
 		try {
@@ -54,9 +54,11 @@ public class ItextGenerator {
 		return null;
 		
 	}
-	public static Paragraph ajoutParagraphe(String paragraphe, TextAlignment alignement, float fontSize, Border border) {
-		return new Paragraph(paragraphe).setTextAlignment(alignement).setFontSize(fontSize).setBorder(border);
-	}
+	/**
+	 * ajout et mise en page du paragraphe
+	 * @param chaine : 
+	 * @return une cellule
+	 */
 	
 	public static Cell remplissageCellDottedBorder(String chaine) {
 		Cell cell = new Cell().add(new Paragraph(chaine));

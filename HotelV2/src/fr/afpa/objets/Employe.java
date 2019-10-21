@@ -19,27 +19,48 @@ public class Employe {
 		nom = nom_;
 		prenom = prenom_;
 	}
-
+	/** modifie le login de l employe
+	*
+	* @param login_ : le login de l employe
+	*/
 	public void setLogin(String login_) {
 		login = login_;
 	}
-
+	/**
+	 * retourne le nouveau login de l employe
+	 *
+	 * @return : une chaine de caractere correspondant au login de l employe
+	 */
 	public String getlogin() {
 		return login;
 	}
-
+	/** modifie le nom de l employe
+	*
+	* @param nom_ : le nom de l employe
+	*/
 	public void setNom(String nom_) {
 		nom = nom_;
 	}
-
+	/**
+	 * retourne le nouveau nom de l employe
+	 *
+	 * @return : une chaine de caractere correspondant au nom de l employe
+	 */
 	public String getNom() {
 		return nom;
 	}
-
+	/** modifie le prenom de l employe
+	*
+	* @param prenom_ : le prenom de l employe
+	*/
 	public void setPrenom(String prenom_) {
 		prenom = prenom_;
 	}
-
+	/**
+	 * retourne le nouveau prenom de l employe
+	 *
+	 * @return : une chaine de caractere correspondant au prenom de l employe
+	 */
 	public String getprenom() {
 		return prenom;
 	}

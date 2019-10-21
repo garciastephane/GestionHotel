@@ -351,7 +351,7 @@ public class Hotel {
 	}
 
 	/**
-	 * methode de crï¿½ation de l'employï¿½ de l'hotel
+	 * methode de creation de l employe de l'hotel
 	 * 
 	 * @param in : le Scanner pour la saisie utilisateur
 	 */
@@ -361,7 +361,7 @@ public class Hotel {
 		String nom;
 		String prenom;
 
-		// Demande des informations pour la crï¿½ation de l'employï¿½
+		// Demande des informations pour la creation de l'employe
 		System.out.println("Entrer le login de l'employe : ");
 		login = Saisie.saisieLoginEmploye(in);
 		System.out.println("Entrer le mot de passe de l'employe : ");
@@ -394,15 +394,15 @@ public class Hotel {
 	public void affichageMenu() {
 		System.out.println("---------------------   MENU HOTEL CDA JAVA  ------------------");
 		System.out.println("");
-		System.out.println("A- Afficher l'ï¿½tat de l'hï¿½tel");
-		System.out.println("B- Afficher le nombre de chambres rï¿½servï¿½es");
-		System.out.println("C- Afficher le numï¿½ro de chambres libres");
-		System.out.println("D- Afficher le numï¿½ro de la premiï¿½re chambre vide");
-		System.out.println("E- Afficher le numï¿½ro de la derniï¿½re chambre vide");
-		System.out.println("F- Rï¿½server une chambre");
-		System.out.println("G- Libï¿½rer une chambre");
-		System.out.println("H- Modifier une rï¿½servation");
-		System.out.println("I- Annuler une rï¿½servation");
+		System.out.println("A- Afficher l'etat de l'hotel");
+		System.out.println("B- Afficher le nombre de chambres reservees");
+		System.out.println("C- Afficher le numero de chambres libres");
+		System.out.println("D- Afficher le numero de la premiere chambre vide");
+		System.out.println("E- Afficher le numero de la derniere chambre vide");
+		System.out.println("F- Reserver une chambre");
+		System.out.println("G- Liberer une chambre");
+		System.out.println("H- Modifier une reservation");
+		System.out.println("I- Annuler une reservation");
 		System.out.println("Q- Quitter");
 		System.out.println("");
 		System.out.println("---------------------------------------------------------------");
@@ -413,7 +413,7 @@ public class Hotel {
 	 * Traitement du choix employe
 	 * 
 	 * @param in : le Scanner pour la saisie utilisateur
-	 * @return : false si l'employï¿½ veut quitter le Menu, true sinon
+	 * @return : false si l'employe veut quitter le Menu, true sinon
 	 */
 	public boolean choixEmploye(Scanner in, int indiceEmploye) {
 		String choix = in.nextLine();
@@ -496,7 +496,8 @@ public class Hotel {
 		for (int i = 0; i < listeChambres.length; i++) {
 
 			if (!listeChambres[i].isReserve(LocalDate.now())) {
-				System.out.println("Le numï¿½ro de la premiï¿½re chambre libre est : " + listeChambres[i].getNumero());
+				System.out.println(
+						"Le numï¿½ro de la premiere chambre libre est : " + listeChambres[i].getNumero());
 				return;
 			}
 		}
@@ -510,7 +511,8 @@ public class Hotel {
 
 		for (int i = listeChambres.length - 1; i >= 0; i--) {
 			if (!listeChambres[i].isReserve(LocalDate.now())) {
-				System.out.println("Le numï¿½ro de la derniï¿½re chambre libre est : " + listeChambres[i].getNumero());
+				System.out.println(
+						"Le numero de la derniere chambre libre est : " + listeChambres[i].getNumero());
 				return;
 			}
 		}
@@ -539,7 +541,7 @@ public class Hotel {
 																											// l'hotel
 
 			if (!listeChambres[indiceChambreHotel].isReservePeriode(dateDebut, dateFin)) { // si la chambre n'est pas
-																							// r�serv�
+																							// reserve
 
 				identique = false;
 				for (int indiceChambreDispo = 0; indiceChambreDispo < indiceChambreDispoMax; indiceChambreDispo++) { // on
@@ -548,7 +550,7 @@ public class Hotel {
 																														// l'on
 																														// a
 																														// pas
-																														// ajout�
+																														// ajoutee
 																														// une
 																														// chambre
 					// identique
@@ -571,8 +573,8 @@ public class Hotel {
 				}
 
 				if (!identique && !reservationMax) {// si on a pas une chambre identique et que la chambre n'a pas
-													// atteint sa capacit� max, on l'ajoute � la liste de chambre
-													// propos�es
+													// atteint sa capacitee max, on l'ajoute a la liste de chambre
+													// proposees
 
 					indiceChambresDisponiblesTemp[indiceChambreDispoMax] = indiceChambreHotel;
 					indiceChambreDispoMax++;
@@ -582,9 +584,9 @@ public class Hotel {
 			}
 		}
 
-		if (indiceChambreDispoMax > 0) { // si on a au moins une chambre � propos� on recr�e un tableau de la
+		if (indiceChambreDispoMax > 0) { // si on a au moins une chambre qui est proposee on recupere un tableau de la
 											// taille du
-											// nombre de chambres propos�es
+											// nombre de chambres proposees
 			indiceChambresDisponibles = new int[indiceChambreDispoMax];
 			for (int i = 0; i < indiceChambresDisponibles.length; i++) {
 				indiceChambresDisponibles[i] = indiceChambresDisponiblesTemp[i];
@@ -595,14 +597,15 @@ public class Hotel {
 	}
 
 	/**
-	 * Methode qui permet d'afficher l' ï¿½tat de l'hotel
+	 * Methode qui permet d'afficher l' Etat de l'hotel
 	 * 
 	 * @param liste      chambres : represente toutes les chambres de l'hotel
 	 * @param nom        : le nom du client
-	 * @param superficie : reprï¿½sente la superficie
-	 * @param vue        : rï¿½presente la(les) vue(s) de la chambre
-	 * @param chambre    occupï¿½e : savoir si une chambre est occupï¿½e ï¿½ la date
-	 * @param liste      reservations : liste des rï¿½servations
+	 * @param superficie : represente la superficie
+	 * @param vue        : represente la(les) vue(s) de la chambre
+	 * @param chambre    occupee : savoir si une chambre est occupee
+	 *                   a la date
+	 * @param liste      reservations : liste des reservations
 	 */
 	public void afficherEtatHotel() {
 		System.out.println("Le chiffre d'affaires de la journée est de : " + calculCA());
@@ -662,7 +665,7 @@ public class Hotel {
 		Client clientReservation = null;
 		int i;
 
-		// authentification employé si echoue retour menu employé
+		// authentification employé si echoue retour menu employe
 		if (!Controle.authentificationEmploye(in, employe.getlogin(), cheminFichierMdp)) {
 			System.out.println("Erreur authentification");
 			return;
@@ -673,9 +676,9 @@ public class Hotel {
 			clientReservation = employe.creationNouveauClient(in, listeLoginClient());
 		} else {
 			System.out.println("Etes vous un nouveau client ? (oui ou non)");
-			if (Saisie.saisieOuiouNon(in).equals("oui")) { // réservation d'un nouveau client
+			if (Saisie.saisieOuiouNon(in).equals("oui")) { // reservation d'un nouveau client
 				clientReservation = employe.creationNouveauClient(in, listeLoginClient());
-			} else { // reservation d'un client fidèle à l'hotel
+			} else { // reservation d'un client fidele à l'hotel
 				System.out.println("Voici la liste des clients de l'hotel : ");
 				afficherListeClient();
 				System.out.println("Veuillez entrer le login du client");
@@ -685,16 +688,16 @@ public class Hotel {
 			}
 		}
 
-		// verification du nombre de réservation du client
+		// verification du nombre de reservation du client
 		if (clientReservation.getNombreDeReservations() >= 5) {
-			System.out.println("Désolé, vous avez déjà 5 réservations dans notre hotel");
+			System.out.println("Desole, vous avez deja� 5 reservations dans notre hotel");
 			return;
 		}
 
 		// demande des dates de séjour valide
-		System.out.println("quel est votre date de début de séjour dans notre hotel (format dd/MM/yyyy)");
+		System.out.println("quel est votre date de debut de séjour dans notre hotel (format dd/MM/yyyy)");
 		dateDebut = LocalDate.parse(Saisie.saisieDate(in, LocalDate.now()), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		System.out.println("quel est votre date de fin du séjour dans notre hotel");
+		System.out.println("quel est votre date de fin du sejour dans notre hotel");
 		dateFin = LocalDate.parse(Saisie.saisieDate(in, dateDebut.plusDays(1)),
 				DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
@@ -702,7 +705,7 @@ public class Hotel {
 		// déjà 5 reservations dans la chambres (capacité?)
 		indiceChambresDisponible = indiceListeChambreDispo(dateDebut, dateFin);
 		if (indiceChambresDisponible == null) {
-			System.out.println("Désolé nous n'avons aucune chambre à vous proposer");
+			System.out.println("Desole nous n'avons aucune chambre a vous proposer");
 			return;
 		}
 
@@ -710,13 +713,13 @@ public class Hotel {
 		for (i = 0; i < indiceChambresDisponible.length; i++) {
 			System.out.println(i + " : " + listeChambres[indiceChambresDisponible[i]]);
 		}
-		System.out.println(i + " : aucune chambres proposées vous convient, annulation de la réservation");
+		System.out.println(i + " : aucune chambres proposees vous convient, annulation de la reservation");
 
 		// choix utilisateur
 		System.out.println("quelle chambre voulez-vous reserver ? (choix entre 0 et " + i);
 		indiceChambreReserve = Saisie.saisieChoixInt(in, 0, i);
 		if (indiceChambreReserve == i) {
-			System.out.println("Désolé que aucune chambre vous convienne");
+			System.out.println("Desole que aucune chambre vous convienne");
 			return;
 		}
 
@@ -729,7 +732,7 @@ public class Hotel {
 		reponse = Saisie.saisieOuiouNon(in);
 
 		if (reponse.equals("non")) {
-			System.out.println("Désolé, que notre hotel ne vous convienne pas");
+			System.out.println("Desole, que notre hotel ne vous convienne pas");
 			return;
 		}
 
@@ -745,6 +748,7 @@ public class Hotel {
 		// envoie facture
 		String cheminFacture = Facture.creationFacture(reservation, employe,
 				listeChambres[indiceChambresDisponible[indiceChambreReserve]], cheminDossierFacture);
+		
 		// Mail.envoiMail(cheminFacture, reservation.getClient().getMail());
 	}
 
@@ -771,10 +775,10 @@ public class Hotel {
 		}
 
 		System.out.println(
-				"1 : libération en utilisant le  numéro de chambre. \n 2 : libération en utilisant le nom du client.");
+				"1 : liberation en utilisant le  numero de chambre. \n 2 : liberation en utilisant le nom du client.");
 		choix = Saisie.saisieChoixInt(in, 1, 2);
 		if (choix == 1) { // liberation via le numero de chambre
-			System.out.println("Veuillez entrer le numero de la chambre (entre 1 et " + listeChambres.length +" ) :");
+			System.out.println("Veuillez entrer le numero de la chambre (entre 1 et " + listeChambres.length + " ) :");
 			numeroChambre = Saisie.saisieChoixInt(in, 1, listeChambres.length);
 			// si la chambre est occupee en ce moment on l'a libere
 			if (listeChambres[numeroChambre - 1].isReserve(LocalDate.now())) {
@@ -788,8 +792,8 @@ public class Hotel {
 
 			System.out.println("Veuillez entrer le nom du client : ");
 			nomClient = Saisie.saisieAlphabetic(in);
-			
-			if(getListeClients()==null) {
+
+			if (getListeClients() == null) {
 				System.out.println("Aucun client dans l'hotel");
 				return;
 			}
@@ -816,7 +820,7 @@ public class Hotel {
 					}
 				}
 				System.out.println(
-						"Il y a plusieurs clients avec le nom demandé. Veuillez choisir le client correspondant");
+						"Il y a plusieurs clients avec le nom demandee. Veuillez choisir le client correspondant");
 				for (int i = 0; i < clients.length; i++) {
 					System.out.println(i + " : login : " + clients[i].getLogin() + " nom : " + clients[i].getNom()
 							+ " prenom : " + clients[i].getPrenom());
@@ -904,7 +908,7 @@ public class Hotel {
 			return;
 		}
 		if (getListeClients() == null) {
-			System.out.println("Il y a aucunes rï¿½servations ï¿½ modifier");
+			System.out.println("Il y a aucunes reservations a modifier");
 			return;
 		}
 		// affiche la liste des clients
@@ -914,7 +918,7 @@ public class Hotel {
 			System.out.println(listeClients[i]);
 		}
 
-		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa rï¿½servation");
+		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa reservation");
 		loginClient = Saisie.saisieLoginExistant(in, listeLoginClient());
 		Reservation[] listeReservationClients = listeReservationsClient(loginClient);
 		for (int k = 0; k < listeReservationClients.length; k++) {
@@ -935,9 +939,9 @@ public class Hotel {
 		}
 
 		// demande des dates de sÃ©jour valide
-		System.out.println("quel est votre date de dÃ©but de sÃ©jour dans notre hotel (format dd/MM/yyyy)");
+		System.out.println("quel est votre date de debut de sejour dans notre hotel (format dd/MM/yyyy)");
 		dateDebut = LocalDate.parse(Saisie.saisieDate(in, LocalDate.now()), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		System.out.println("quel est votre date de fin du sÃ©jour dans notre hotel");
+		System.out.println("quel est votre date de fin du sejour dans notre hotel");
 		dateFin = LocalDate.parse(Saisie.saisieDate(in, dateDebut.plusDays(1)),
 				DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
@@ -946,8 +950,11 @@ public class Hotel {
 					&& listeChambres[indiceChambre].getListeReservations()[i]
 							.getNumeroReservation() != numeroReservationModifier) {
 
-				if (dateDebut.compareTo(listeChambres[indiceChambre].getListeReservations()[i].getDateDebut()) >= 0) {
-					// Vï¿½rifier si modifier rï¿½servation est possible
+				if (!(dateFin.compareTo(listeChambres[indiceChambre].getListeReservations()[i].getDateDebut()) <= 0
+						|| dateDebut
+								.compareTo(listeChambres[indiceChambre].getListeReservations()[i].getDateFin()) >= 0)) {
+					System.out.println("Modification impossible, la chambre est reservee durant cette periode");
+					return;
 				}
 			}
 		}
@@ -986,7 +993,7 @@ public class Hotel {
 		}
 
 		if (getListeClients() == null) {
-			System.out.println("Il y a aucunes rï¿½servations ï¿½ annuler");
+			System.out.println("Il y a aucunes reservations a annuler");
 			return;
 		}
 		// affiche la liste des clients
@@ -996,7 +1003,7 @@ public class Hotel {
 			System.out.println(listeClients[i]);
 		}
 
-		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa rï¿½servation");
+		System.out.println("Veuillez entrer le login du client qui souhaite modifier sa reservation");
 		loginClient = Saisie.saisieLoginExistant(in, listeLoginClient());
 		Reservation[] listeReservationClients = listeReservationsClient(loginClient);
 		for (int k = 0; k < listeReservationClients.length; k++) {
@@ -1045,16 +1052,16 @@ public class Hotel {
 		String[] transaction;
 		for (int i = 1; i < listeTransactions.length; i++) {
 			transaction = listeTransactions[i].split(";");
-			if (transaction.length>1 && transaction[1].equals("remboursement")) {
+			if (transaction.length > 1 && transaction[1].equals("remboursement")) {
 				chiffreAffaires -= Integer.parseInt(transaction[2]);
-			} else if (transaction.length>1 && transaction[1].equals("payement")) {
+			} else if (transaction.length > 1 && transaction[1].equals("payement")) {
 				chiffreAffaires += Integer.parseInt(transaction[2]);
 			}
 		}
 		return chiffreAffaires;
 
 	}
-	
+
 	/**
 	 * retourne la liste de reservation d'un client via son login
 	 * 
@@ -1062,19 +1069,23 @@ public class Hotel {
 	 * @return un tableau Reservation contenant la liste de reservation du client
 	 */
 	public void affichageListeReservationsClient(String loginClient) {
-	
+
 		// recuperation des reservations du client
 		for (int i = 0; i < listeChambres.length; i++) {
 			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
 				if (listeChambres[i].getListeReservations()[j] != null
 						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
-				System.out.println("- Reservation n° " + listeChambres[i].getListeReservations()[j].getNumeroReservation() + " ,chambre n°" + listeChambres[i].getNumero() +  " ,type : " + listeChambres[i].getTypeDeChambre());
-				System.out.println("Periode de reservation : du " + listeChambres[i].getListeReservations()[j].getDateDebut() + " au " + listeChambres[i].getListeReservations()[j].getDateFin() );
-				System.out.println("---------------------------------------------------------------");
+					System.out.println("- Reservation n� "
+							+ listeChambres[i].getListeReservations()[j].getNumeroReservation() + " ,chambre n�"
+							+ listeChambres[i].getNumero() + " ,type : " + listeChambres[i].getTypeDeChambre());
+					System.out.println(
+							"Periode de reservation : du " + listeChambres[i].getListeReservations()[j].getDateDebut()
+									+ " au " + listeChambres[i].getListeReservations()[j].getDateFin());
+					System.out.println("---------------------------------------------------------------");
 				}
 
 			}
-			
+
 		}
 		try {
 			Thread.sleep(20000);

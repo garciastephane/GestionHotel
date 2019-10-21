@@ -65,8 +65,8 @@ public class Controle {
 	}
 
 	/**
-	 * methode qui verifie si la chaine de caracteres et non vide (les espaces sont
-	 * concidéré comme vide)
+	 * methode qui verifie si la chaine de caracteres est non vide (les espaces sont
+	 * considéré comme vide)
 	 * 
 	 * @param chaine chaine de caractères à vérifier
 	 * @return true si la chaine de caractères est non vide et n'est pas constituée
@@ -79,6 +79,7 @@ public class Controle {
 		return true;
 	}
 
+	
 	public static boolean isUnique(String chaine, String[] tableauExistant) {
 		for (int i = 0; i < tableauExistant.length; i++) {
 			if (chaine.equals(tableauExistant[i])) {
@@ -96,34 +97,33 @@ public class Controle {
 	 */
 
 	public static boolean isMail(String mail) {
-		
+		//  retourne false si le mail est vide
 		if (mail == null)
 			return false;
-		
+		// retourne false si la longueur du mail est inferieur a 5 caracteres
 		if (mail.length()<5)
 			return false;
-			
-			
+						
 		// un string avec . apparaît deux fois de suite
 		if (mail.contains("..") )
 			return false;
 		// un string avec un point avant arobase
 		if (mail.contains(".@") )
 			return false;
-
+		// un string avec un @ entre deux mots
 		String [] parts = mail.split("@");
 		
 		if(parts.length != 2) {
 		
 			return false; }
-		
+		// un string une premiere partie qui n est pas vide
 			String part1 =parts[0];
 			if(!isNonVide(part1)) {
 				
 				return false;}
-						
+			// un string avec une deuxieme partie qui n est pas vide		
 			String part2 = parts[1];
-			
+			// un string avec une trosieme partie qui n est pas vide
 			String [] part3 =part2.split("\\.");
 			
 			if(part3.length!=2) {
@@ -164,11 +164,11 @@ public class Controle {
 	}
 
 	/**
-	 * methode qui vérifie si la chaine est composée uniquement de caractères
+	 * methode qui vérifie si la chaine est composee uniquement de caractères
 	 * alphabetique
 	 * 
 	 * @param reponse
-	 * @return
+	 * @return false si chaine n est pas composee que de caracteres alphabetiques sinon true
 	 */
 	public static boolean isAlphabetic(String reponse) {
 		if (reponse.replaceAll(" ", "").equals("")) {
@@ -182,7 +182,13 @@ public class Controle {
 		}
 		return true;
 	}
-
+	/**
+	 * methode qui vérifie authantification de l'employe
+	 * @param in Scanner pour recuperer le mot de passe de l'employe
+	 * @param choix correspond au choix de l'employe
+	 * @param cheminFichierMdp fichier ou sont stockes les mots de passe des employes
+	 * @return true si authentification valide false si authentification incorrecte
+	 */
 	public static boolean authentificationEmploye(Scanner in, String choix, String cheminFichierMdp) {
 		String[] lignesFichier = Fichier.lecture(cheminFichierMdp);
 		String[] ligne;
