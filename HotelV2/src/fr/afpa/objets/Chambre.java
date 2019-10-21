@@ -263,7 +263,7 @@ public class Chambre {
 			if (listeReservations[i] != null && listeReservations[i].isEnCours()) {
 				 
 				//modification de la reservation en mettant la date de fin a aujourd'hui et on effectue le remboursement et alimentation du fichier transaction
-				listeReservations[i].modifReservationPayement(tarif,listeReservations[i].getDateDebut(), LocalDate.now(),in);
+				listeReservations[i].modifReservationPayement(this,listeReservations[i].getDateDebut(), LocalDate.now(),in,false);
 				//la reservation n'est plus d'actualite, on la passe a null
 				listeReservations[i] = null;
 				return;

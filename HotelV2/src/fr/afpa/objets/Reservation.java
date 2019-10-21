@@ -119,7 +119,7 @@ public class Reservation {
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("Votre reservation : ");
 		System.out.println("Du " + dateDebut + " au " + dateFin);
-		System.out.println("Chambre n�" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
+		System.out.println("Chambre numero :" + chambre.getNumero() + " type: " + chambre.getTypeDeChambre() + " superficie: "
 				+ chambre.getSuperficie());
 		System.out.println(" vue : " + chambre.getVue() + " tarif journalier : " + chambre.getTarif());
 		System.out.println("Options de la chambre : ");
@@ -163,7 +163,7 @@ public class Reservation {
 	 * @param date          : date de la transaction
 	 * @param nature        : nature de la transaction
 	 * @param valeur        : valeur de la transaction
-	 * @param numeroCarte   : num�ro de carte du client
+	 * @param numeroCarte   : numero de carte du client
 	 * @param cheminDossier : chemin dosssier transaction
 	 */
 	public void transaction(LocalDate date, String nature, int valeur, String numeroCarte, String cheminDossier) {
@@ -198,20 +198,24 @@ public class Reservation {
 
 	/**
 	 * methode qui modifie le paiement de la reservation
-	 * @param tarifJour              : tarif d un jour de la chambre
+	 * @param chambre              :  chambre de la reservation
 	 * @param dateDebutNouv          : date de debut de la nouvelle reservation
 	 * @param dateFinNouv            : date de fin de la nouvelle reservation
 	 * @param in                     : scanner qui recupere la transaction
+	 *  @param modif                     : true si modification reservation
 	 */
-	public void modifReservationPayement(int tarifJour, LocalDate dateDebutNouv, LocalDate dateFinNouv, Scanner in) {
-		int montantInitial = calculMontant(tarifJour);
+	public void modifReservationPayement( Chambre chambre, LocalDate dateDebutNouv, LocalDate dateFinNouv, Scanner in , boolean modif) {
+		int montantInitial = calculMontant(chambre.getTarif());
 		dateDebut = dateDebutNouv;
 		dateFin = dateFinNouv;
 		
 		if(dateFin.equals(LocalDate.now())) { // la reservation est termine
 			client.setNombreDeReservations(client.getNombreDeReservations()-1);
 		}
-		int nouveauMontant = calculMontant(tarifJour) - montantInitial;
+		if(modif) {
+			affichage(chambre);
+		}
+		int nouveauMontant = calculMontant(chambre.getTarif()) - montantInitial;
 		payement(nouveauMontant, in, "ressources\\transactions\\");
 
 	}
