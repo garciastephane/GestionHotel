@@ -468,7 +468,7 @@ public class Hotel {
 
 		}
 
-		System.out.println("il y a " + nombreChambresReserves + " chambres reservees");
+		System.out.println("il y a " + nombreChambresReserves + " chambres occupees");
 
 	}
 
@@ -497,7 +497,7 @@ public class Hotel {
 
 			if (!listeChambres[i].isReserve(LocalDate.now())) {
 				System.out.println(
-						"Le numÃ¯Â¿Â½ro de la premiere chambre libre est : " + listeChambres[i].getNumero());
+						"Le numero de la premiere chambre libre est : " + listeChambres[i].getNumero());
 				return;
 			}
 		}
@@ -690,7 +690,7 @@ public class Hotel {
 
 		// verification du nombre de reservation du client
 		if (clientReservation.getNombreDeReservations() >= 5) {
-			System.out.println("Desole, vous avez deja  5 reservations dans notre hotel");
+			System.out.println("Desole, vous avez dejaï¿½ 5 reservations dans notre hotel");
 			return;
 		}
 
@@ -1075,8 +1075,8 @@ public class Hotel {
 			for (int j = 0; j < listeChambres[i].getListeReservations().length; j++) {
 				if (listeChambres[i].getListeReservations()[j] != null
 						&& listeChambres[i].getListeReservations()[j].getClient().getLogin().equals(loginClient)) {
-					System.out.println("- Reservation n° "
-							+ listeChambres[i].getListeReservations()[j].getNumeroReservation() + " ,chambre n°"
+					System.out.println("- Reservation nï¿½ "
+							+ listeChambres[i].getListeReservations()[j].getNumeroReservation() + " ,chambre nï¿½"
 							+ listeChambres[i].getNumero() + " ,type : " + listeChambres[i].getTypeDeChambre());
 					System.out.println(
 							"Periode de reservation : du " + listeChambres[i].getListeReservations()[j].getDateDebut()
