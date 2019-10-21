@@ -138,8 +138,8 @@ public class Chambre {
 	/**
 	 * methode qui permet de vérifier si une chambre est réservée à une date
 	 * 
-	 * @param date : LocalDate représentant la date où on veut savoir si la
-	 *             chambre est réservé
+	 * @param date : LocalDate représentant la date où on veut savoir si la chambre
+	 *             est réservé
 	 * @return true si la chambre est réservée, false si elle est libre
 	 * @throws InterruptedException
 	 */
@@ -159,12 +159,12 @@ public class Chambre {
 	 * méthode qui permet de verifier si une chambre est reserve � pendant une
 	 * période
 	 * 
-	 * @param dateDebut : LocalDate représentant la date de début de la période
-	 *                  où on veut savoir si la chambre est réservé
-	 * @param dateFin   : LocalDate représentant la date de fin de la période où
+	 * @param dateDebut : LocalDate représentant la date de début de la période où
 	 *                  on veut savoir si la chambre est réservé
-	 * @return true si la chambre est réservée au moins 1 jour pendant la
-	 *         période, false si elle est libre pendant toute la période
+	 * @param dateFin   : LocalDate représentant la date de fin de la période où on
+	 *                  veut savoir si la chambre est réservé
+	 * @return true si la chambre est réservée au moins 1 jour pendant la période,
+	 *         false si elle est libre pendant toute la période
 	 */
 
 	public boolean isReservePeriode(LocalDate dateDebut, LocalDate dateFin) {
@@ -257,7 +257,7 @@ public class Chambre {
 	 */
 	public void liberationChambre(Scanner in) {
 		
-		//recherche de la r�servation en cours(celle qu'il faut liberer)
+		//recherche de la r�servation en cours(celle qu'il faut liberer)
 		for (int i = 0; i < listeReservations.length; i++) {
 			
 			if (listeReservations[i] != null && listeReservations[i].isEnCours()) {
@@ -269,6 +269,8 @@ public class Chambre {
 				return;
 			}
 		}
-		
+
 	}
+
+	
 }
