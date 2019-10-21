@@ -749,7 +749,7 @@ public class Hotel {
 		String cheminFacture = Facture.creationFacture(reservation, employe,
 				listeChambres[indiceChambresDisponible[indiceChambreReserve]], cheminDossierFacture);
 		
-		// Mail.envoiMail(cheminFacture, reservation.getClient().getMail());
+		 Mail.envoiMail(cheminFacture, reservation.getClient().getMail());
 	}
 
 	/**
