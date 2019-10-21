@@ -608,7 +608,7 @@ public class Hotel {
 	 * @param liste      reservations : liste des reservations
 	 */
 	public void afficherEtatHotel() {
-		System.out.println("Le chiffre d'affaires de la journée est de : " + calculCA());
+		System.out.println("Le chiffre d'affaires de la journee est de : " + calculCA());
 
 		for (int i = 0; i < listeChambres.length; i++)
 			listeChambres[i].afficherEtatChambre();
